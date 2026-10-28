@@ -11,7 +11,7 @@ O índice e a linha do tempo. Comece por aqui. Cada etapa tem um documento curto
 | 01 | O problema e a nossa ideia | [01-problema-e-ideia.md](01-problema-e-ideia.md) | ✅ |
 | 02 | Pesquisa de mercado e fontes oficiais | [02-pesquisa-e-fontes.md](02-pesquisa-e-fontes.md) | ✅ |
 | 03 | Protótipos das jornadas | [03-prototipos.md](03-prototipos.md) | ✅ |
-| 10 | T1 · Parâmetros e fontes no motor | [10-t1-parametros.md](10-t1-parametros.md) | ⏳ |
+| 10 | T1 · Parâmetros e fontes no motor | [10-t1-parametros.md](10-t1-parametros.md) | ✅ |
 | 11 | T2 · Imóvel e bens | [11-t2-imovel-e-bens.md](11-t2-imovel-e-bens.md) | ⏳ |
 | 12 | T3 · Elegibilidade, plano e coberturas | [12-t3-plano-e-coberturas.md](12-t3-plano-e-coberturas.md) | ⏳ |
 | 13 | T4 · Validação e planilhas v1 | [13-t4-planilhas-v1.md](13-t4-planilhas-v1.md) | ⏳ |

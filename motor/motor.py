@@ -159,10 +159,10 @@ def inferir_conteudo(r, bens):
 
 
 def valor_imovel(r, tipo, area):
-    cub = P.CUB_M2_POR_UF.get(r.uf_real, P.CUB_M2_PADRAO) * P.FATOR_PADRAO.get(r.padrao_construtivo_cadastrado, 1.0)
+    cub = P.custo_m2(r.uf_real)[1] * P.FATOR_PADRAO.get(r.padrao_construtivo_cadastrado, 1.0)
     cheio = (area["min"] * cub, area["max"] * cub)
     if tipo["valor"] == "APARTAMENTO":
-        f_lo, f_hi = P.FRACAO_ESTRUTURA_APARTAMENTO
+        f_lo, f_hi = P.FRACAO_ACABAMENTOS
         segurado = (cheio[0] * f_lo, cheio[1] * f_hi)
     else:
         segurado = cheio
@@ -241,20 +241,10 @@ def escolher_plano(r, tipo, vinculo, uso, conteudo):
     plano = "ESSENCIAL"
     if pratico >= 2 or total >= 2:
         plano = "PRATICO"
-    if total >= 2 and r.renda_mensal >= P.RENDA_MIN_TOTAL:
+    if total >= 2:
         plano = "TOTAL"
     ideal = plano
-    if r.renda_mensal < P.RENDA_MAX_SO_ESSENCIAL and plano != "ESSENCIAL":
-        plano = "ESSENCIAL"
-        motivos.append({"plano": "ESSENCIAL", "peso": 0, "codigo": "ORCAMENTO",
-                        "texto": "começamos pelo Essencial para caber no orçamento; o plano mais completo fica como alternativa"})
-
     adicionais = []
-    if plano == "PRATICO" and total >= 2:  # quer Total mas renda não comporta: só o que mais pesa
-        if vinculo["valor"] in ("INQUILINO", "PROPRIETARIO_LOCADOR"):
-            adicionais.append("PERDA_PAGAMENTO_ALUGUEL")
-        elif r.quantidade_dependentes > 0 or r.possui_pet_informado == "SIM":
-            adicionais.append("RESPONSABILIDADE_CIVIL_FAMILIAR")
 
     alternativa = _alternativa(plano, ideal)
     return plano, motivos, {"pratico": pratico, "total": total}, adicionais, alternativa
@@ -328,8 +318,8 @@ def dimensionar(cob, r, tipo, vinculo, area, conteudo, imovel):
             "Janelas, box e tampos de vidro.", "Há vidros grandes (sacada, box, fachada)?", ""
     if cob == "RESPONSABILIDADE_CIVIL_FAMILIAR":
         base = 30000 + 15000 * r.quantidade_dependentes + (10000 if r.possui_pet_informado == "SIM" else 0)
-        lo, hi = faixa(base, base * (1.5 + r.renda_mensal / 30000), cob)
-        return lo, hi, "MEDIA", "dependentes, pet, renda", "R$ 30 mil + R$ 15 mil por dependente + R$ 10 mil se pet, teto escala com renda", \
+        lo, hi = faixa(base, base * 2, cob)
+        return lo, hi, "MEDIA", "dependentes, pet", "R$ 30 mil + R$ 15 mil por dependente + R$ 10 mil se pet; máximo = 2 × mínimo", \
             "Danos que a família ou o pet causem a terceiros.", "", ""
     if cob == "PERDA_PAGAMENTO_ALUGUEL":
         m_lo, m_hi = P.MESES_PERDA_ALUGUEL

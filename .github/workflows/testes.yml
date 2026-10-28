@@ -1,0 +1,19 @@
+name: testes
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  motor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Testes
+        run: python -m pytest -q
+      - name: Gera as planilhas dos 138 casos
+        run: python motor/gerar.py

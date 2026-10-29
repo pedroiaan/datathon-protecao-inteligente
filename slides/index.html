@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Varetas · Proteção Inteligente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Nunito:ital,wght@0,800;0,900;1,800&display=swap" rel="stylesheet">
+  <style>
+    :root{--blue:#465eff;--blue-deep:#2d37f5;--night:#1c2266;--pale:#f3f6ff;--light:#e4ecff;--soft-blue:#9aa8ff;--yellow:#fcfc30;--ink:#111214;--ink2:#3a3d46;--muted:#6c7077;--paper:#f7f7f8;--line:#dfe1e6;--amber:#8a5a00;--amber-pale:#fff4d6;--white:#fff;--shadow:0 1px 2px rgba(28,34,102,.06),0 12px 40px rgba(28,34,102,.12)}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#15194c;color:var(--ink);font-family:'Figtree',sans-serif}
+    #stage{position:absolute;inset:0;overflow:hidden;background:#15194c}.slide{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;transform-origin:center center;background:var(--paper);opacity:0;visibility:hidden;transition:opacity .24s cubic-bezier(.23,1,.32,1),visibility .24s}.slide.active{opacity:1;visibility:visible}
+    .dark{background:var(--night);color:#fff}.diagonal:before,.diagonal:after{content:"";position:absolute;inset:0;pointer-events:none}.diagonal:before{background:linear-gradient(135deg,transparent 0 48%,rgba(70,94,255,.24) 48% 63%,transparent 63%);clip-path:polygon(30% 0,100% 0,100% 100%,0 100%)}.diagonal:after{background:linear-gradient(135deg,transparent 0 58%,rgba(45,55,245,.65) 58% 73%,transparent 73%);clip-path:polygon(45% 0,100% 0,100% 100%,0 100%);opacity:.7}
+    .canvas{position:relative;z-index:1;height:100%;padding:100px 144px 96px;display:flex;flex-direction:column}.eyebrow{font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin:0 0 24px}.dark .eyebrow{color:var(--soft-blue)}h1,h2,h3,p{margin-top:0}h1,h2,.display,.number{font-family:'Nunito',sans-serif;font-weight:800;letter-spacing:-1px}h1{font-size:82px;line-height:1.02;margin:0 0 24px}h2{font-size:66px;line-height:1.02;margin:0 0 26px}h3{font-size:34px;line-height:1.1;font-weight:700;margin:0 0 15px}.accent{color:var(--blue);font-style:italic}.dark .accent{color:var(--yellow)}.sub{font-size:31px;line-height:1.35;color:var(--ink2);max-width:1180px}.dark .sub{color:#e5e8ff}.muted{color:var(--muted)}.dark .muted{color:#b8c0ff}.label{font-size:17px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}.dark .label{color:#bac2ff}.source{position:absolute;bottom:30px;left:144px;font-size:16px;color:#7d8290}.dark .source{color:#aab2f0}.slide-num{position:absolute;right:144px;bottom:28px;font:600 17px 'Figtree';letter-spacing:1px;color:#888d98}.dark .slide-num{color:#abb3f7}
+    .hero-copy{width:1110px;align-self:center;margin-top:64px}.hero-copy .sub{max-width:900px}.hero-art{position:absolute;right:115px;bottom:100px;width:590px;height:670px;object-fit:contain;z-index:2}.hero-tag{display:inline-flex;align-items:center;gap:14px;margin-top:40px;color:#fff;font-size:20px;font-weight:600;letter-spacing:.4px}.hero-tag:before{content:"";width:56px;height:4px;background:var(--yellow);border-radius:3px}.brand{position:absolute;top:70px;left:144px;color:#fff;font-weight:700;letter-spacing:2px;font-size:20px;text-transform:uppercase}
+    .flow{display:grid;grid-template-columns:repeat(7,1fr);gap:16px;margin:54px 0 55px;align-items:center}.flow-item{height:112px;border-radius:24px;background:#fff;color:var(--night);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 6px 24px rgba(9,14,73,.16)}.flow-item:not(:last-child):after{content:"";position:absolute;right:-23px;width:22px;height:3px;background:#aab3ff}.flow-item:not(:last-child):before{content:"";position:absolute;right:-23px;width:10px;height:10px;border-top:3px solid #aab3ff;border-right:3px solid #aab3ff;transform:translateX(-1px) rotate(45deg)}.flow-item b{font:800 25px 'Nunito';margin-top:6px}.flow-item span{font-size:15px;color:#696e7e;text-transform:uppercase;letter-spacing:.8px}.signal-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:auto}.signal-card{min-height:170px;border-radius:26px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);padding:26px 30px}.signal-card strong{display:block;font:800 27px 'Nunito';margin-bottom:11px}.signal-card p{font-size:21px;line-height:1.35;color:#e4e7ff;margin:0}
+    .needs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:38px}.need-card{background:#fff;border-radius:28px;padding:34px 34px 30px;min-height:398px;box-shadow:var(--shadow);position:relative;overflow:hidden}.need-card .n{font:900 100px 'Nunito';line-height:1;color:#e9edff}.need-card img{position:absolute;right:24px;top:24px;width:70px;height:70px;object-fit:contain}.need-card h3{font:800 33px 'Nunito';margin:12px 0 23px;color:var(--night)}.need-card .arrow{font-size:22px;font-weight:700;color:var(--blue);line-height:1.35}.need-card .desc{font-size:21px;color:var(--ink2);line-height:1.35;margin-top:18px}.note-band{display:flex;align-items:center;gap:20px;background:var(--pale);border-radius:22px;padding:23px 30px;margin-top:28px;font-size:22px;color:var(--ink2)}.note-band b{color:var(--night)}.note-band .dot{width:14px;height:14px;border-radius:50%;background:var(--blue);flex:none}
+    .data-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;flex:1;margin-top:10px}.panel{background:#fff;border-radius:28px;padding:34px 38px;box-shadow:var(--shadow);position:relative}.panel h3{font:800 32px 'Nunito';color:var(--night)}.goods-flow{display:grid;grid-template-columns:1fr 64px 1fr;gap:15px;align-items:center;margin-top:35px}.goods-box{min-height:186px;background:var(--pale);border-radius:22px;padding:24px}.goods-box strong{display:block;font:800 26px 'Nunito';color:var(--night);margin:14px 0 10px}.goods-box p{font-size:19px;line-height:1.35;color:var(--ink2);margin:0}.goods-box .chip{display:inline-block;background:#fff;border-radius:999px;padding:8px 12px;color:var(--blue-deep);font-size:15px;font-weight:700}.math-arrow{font:900 38px 'Nunito';text-align:center;color:var(--blue)}.range-strip{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}.range-pill{border-radius:18px;background:#f4f5f7;padding:19px 21px}.range-pill strong{font:800 22px 'Nunito';display:block;color:var(--night)}.range-pill span{font-size:17px;color:var(--muted)}.assumption{color:var(--amber);background:var(--amber-pale);border-radius:16px;padding:15px 18px;font-size:17px;line-height:1.3;margin-top:20px}
+    .half-life{display:flex;flex-direction:column;gap:12px;margin:22px 0}.half-row{display:grid;grid-template-columns:190px 1fr 105px;align-items:center;gap:14px;font-size:18px}.half-row strong{font-size:19px}.half-track{height:12px;background:#edf0fb;border-radius:9px;overflow:hidden}.half-track i{display:block;height:100%;background:var(--blue);border-radius:9px}.half-row em{font-style:normal;color:var(--night);font:800 20px 'Nunito';text-align:right}.fresh-note{font-size:18px;line-height:1.42;color:var(--ink2);background:var(--pale);padding:19px 21px;border-radius:18px;margin-top:auto}.fresh-caveat{font-size:15px;line-height:1.35;color:var(--amber);margin:14px 0 0}
+    .demo-layout{display:grid;grid-template-columns:690px 1fr;gap:68px;align-items:center;flex:1}.phone-shell{width:545px;height:742px;margin:auto;border-radius:58px;background:#18191d;padding:17px;box-shadow:0 24px 70px rgba(28,34,102,.25);position:relative}.phone-screen{height:100%;border-radius:44px;background:#f8f9fc;overflow:hidden;padding:36px 32px;position:relative}.phone-notch{position:absolute;top:15px;left:50%;transform:translateX(-50%);height:26px;width:132px;background:#17181c;border-radius:0 0 18px 18px;z-index:2}.phone-top{display:flex;justify-content:space-between;align-items:center;margin-top:7px;color:#6c7077;font-size:15px}.bb-mark{font:800 22px 'Nunito';color:var(--blue)}.phone-title{font:800 30px 'Nunito';line-height:1.05;color:var(--ink);margin:36px 0 10px}.phone-sub{font-size:17px;color:var(--muted);line-height:1.35}.phone-card{background:#fff;border-radius:20px;padding:21px;margin-top:18px;box-shadow:0 4px 16px rgba(28,34,102,.08)}.phone-card .small-label{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700}.phone-card strong{display:block;font:800 23px 'Nunito';margin:8px 0;color:var(--night)}.phone-card p{font-size:16px;line-height:1.35;margin:0;color:var(--ink2)}.confidence{display:flex;align-items:center;gap:12px;margin-top:16px}.confidence .bar{height:9px;flex:1;background:#e5e9f8;border-radius:9px}.confidence .bar i{display:block;width:92%;height:100%;border-radius:9px;background:var(--blue)}.confidence b{color:var(--blue-deep);font:700 16px 'Figtree'}.phone-button{display:block;text-align:center;background:var(--yellow);color:var(--night);font:800 17px 'Nunito';border-radius:999px;padding:16px;margin-top:22px}.demo-info .eyebrow{margin-bottom:15px}.demo-info h2{font-size:60px}.demo-info .sub{font-size:26px}.metric-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}.metric-mini{background:#fff;border-radius:21px;padding:22px;box-shadow:var(--shadow)}.metric-mini b{display:block;font:900 46px 'Nunito';color:var(--blue);line-height:1.05}.metric-mini span{font-size:17px;color:var(--ink2)}.demo-summary{margin-top:20px;border-left:5px solid var(--blue);padding:4px 0 4px 18px;font-size:20px;line-height:1.4;color:var(--ink2)}.mock-caption{position:absolute;left:0;right:0;bottom:-43px;text-align:center;font:700 16px 'Figtree';letter-spacing:1px;color:#7f8490;text-transform:uppercase}
+    .response-card{background:var(--pale);border-radius:22px;padding:21px;margin-top:16px}.response-card .question{font-size:18px;font-weight:700;line-height:1.3}.options{display:flex;gap:10px;margin-top:13px}.option{border:1px solid var(--line);border-radius:999px;background:#fff;padding:10px 18px;font-weight:700;color:var(--ink2);font-size:16px}.option.selected{background:var(--blue);border-color:var(--blue);color:#fff}.after-answer{margin-top:17px;padding:18px;border-radius:18px;background:#e8eeff}.after-answer strong{color:var(--blue-deep);font:800 22px 'Nunito'}.after-answer p{font-size:16px;line-height:1.35;margin:5px 0 0;color:var(--ink2)}.confidence.medium .bar i{width:65%;background:var(--amber)}.confidence.medium b{color:var(--amber)}
+    .slide[data-title^="Sérgio"] .phone-title{margin-top:24px}.slide[data-title^="Sérgio"] .phone-card{margin-top:12px;padding:16px}.slide[data-title^="Sérgio"] .response-card{margin-top:11px;padding:16px}.slide[data-title^="Sérgio"] .after-answer{margin-top:12px;padding:14px}
+    .evidence-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;flex:1;margin-top:12px}.evidence-big{display:grid;grid-template-columns:1fr 1fr;gap:18px}.evidence-card{background:#fff;border-radius:24px;padding:25px 27px;box-shadow:var(--shadow);min-height:154px}.evidence-card strong{display:block;font:900 50px 'Nunito';line-height:1;color:var(--blue);margin-bottom:11px}.evidence-card span{font-size:18px;line-height:1.28;color:var(--ink2)}.area-proof{background:var(--night);color:#fff;border-radius:28px;padding:32px 36px;display:flex;flex-direction:column;justify-content:space-between}.area-proof .tag{color:var(--soft-blue);font-size:15px;text-transform:uppercase;font-weight:700;letter-spacing:1.4px}.area-proof .compare{display:flex;align-items:baseline;gap:20px}.area-proof .compare strong{font:900 55px 'Nunito';color:var(--yellow)}.area-proof .compare span{font-size:20px;color:#d9ddff}.area-proof p{font-size:20px;line-height:1.38;color:#e6e8ff;max-width:630px}.limitations{background:#fff;border-radius:28px;padding:31px 34px;box-shadow:var(--shadow);display:flex;flex-direction:column}.limitations h3{font:800 29px 'Nunito';color:var(--night)}.limitation-item{display:flex;gap:14px;margin:10px 0;font-size:18px;line-height:1.3;color:var(--ink2)}.limitation-item i{width:13px;height:13px;margin-top:6px;border-radius:50%;background:var(--amber);flex:none}.close-line{font:800 30px 'Nunito';line-height:1.2;color:var(--night);margin-top:auto;padding-top:16px;border-top:1px solid var(--line)}.final-mark{position:absolute;right:115px;bottom:90px;width:465px;height:410px;object-fit:contain;z-index:2}
+    .controls{position:fixed;z-index:20;bottom:19px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:999px;background:rgba(20,24,69,.84);backdrop-filter:blur(12px);color:#fff;font:600 13px 'Figtree';letter-spacing:.3px}.controls button{font:700 16px 'Figtree';color:#fff;background:transparent;border:0;cursor:pointer;padding:5px 8px}.controls button:hover{color:var(--yellow)}.progress{position:fixed;z-index:19;bottom:0;left:0;height:4px;background:var(--yellow);width:0;transition:width .2s}.notes-panel{display:none;position:fixed;z-index:30;right:28px;top:28px;width:min(620px,45vw);max-height:calc(100vh - 56px);overflow:auto;background:#fff;color:var(--ink);padding:28px 32px;border-radius:24px;box-shadow:0 18px 60px rgba(0,0,0,.28);font:18px/1.5 'Figtree'}.notes-panel.open{display:block}.notes-panel h3{font:800 22px 'Nunito';color:var(--night);margin:0 0 8px}.notes-panel .time{color:var(--blue);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+    .notes-panel ol{padding-left:24px;margin:8px 0 18px}.notes-panel li{margin:7px 0}.demo-timeline{margin:16px 0 10px;padding:16px 18px;background:var(--pale);border-radius:16px}.demo-timeline b{color:var(--night)}
+    .notas{display:none}
+    @media(max-aspect-ratio:16/9){.controls{bottom:10px}}
+    @media print{@page{size:16in 9in;margin:0}html,body,#stage{width:16in;height:9in;overflow:visible;background:#fff}.slide{position:relative;display:block!important;opacity:1!important;visibility:visible!important;left:auto;top:auto;transform:none!important;width:16in;height:9in;page-break-after:always;break-after:page}.slide:last-child{page-break-after:auto;break-after:auto}.controls,.progress,.notes-panel{display:none!important}.canvas{padding:85px 120px 75px}.source{left:120px;bottom:20px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <main id="stage" aria-label="Apresentação Varetas">
+    <section class="slide dark diagonal active" data-title="Proteção que faz sentido" data-time="0:20">
+      <div class="brand">Datathon Proteção Inteligente · Seguro Residencial</div>
+      <div class="canvas">
+        <div class="hero-copy">
+          <p class="eyebrow">Time Varetas</p>
+          <h1>Entenda por que<br>este plano faz sentido<br>para <span class="accent">a sua casa</span></h1>
+          <p class="sub">Proteção personalizada começa com uma recomendação que a pessoa consegue compreender.</p>
+          <div class="hero-tag">Sinais claros. Escolhas conscientes.</div>
+        </div>
+        <img class="hero-art" src="assets/heroi_entrada.png" alt="Ilustração da campanha do app">
+      </div>
+      <p class="source">Varetas · Datathon Proteção Inteligente</p><span class="slide-num">01 / 05</span>
+      <aside class="notas"><div class="time">20 segundos</div><p>Quando recebe uma proposta de seguro, o cliente precisa entender por que aquela proteção foi recomendada para a casa dele. Nossa solução transforma os sinais disponíveis em uma recomendação explicada: a necessidade, a confiança e o que ainda falta confirmar. Vou mostrar como funciona e depois acompanhar essa explicação no app.</p></aside>
+    </section>
+
+    <section class="slide dark diagonal" data-title="Do sinal ao motivo" data-time="0:30">
+      <div class="canvas">
+        <p class="eyebrow">Como funciona</p>
+        <h2>Do sinal ao <span class="accent">motivo</span></h2>
+        <p class="sub">Cada etapa explica o que sabemos, o que estimamos e o que falta confirmar.</p>
+        <div class="flow">
+          <div class="flow-item"><span>01</span><b>Sinais</b></div>
+          <div class="flow-item"><span>02</span><b>Imóvel</b></div>
+          <div class="flow-item"><span>03</span><b>Elegibilidade</b></div>
+          <div class="flow-item"><span>04</span><b>Confiança</b></div>
+          <div class="flow-item"><span>05</span><b>Perguntas</b></div>
+          <div class="flow-item"><span>06</span><b>Plano</b></div>
+          <div class="flow-item"><span>07</span><b>Motivo</b></div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-card"><strong>O banco já tem sinais</strong><p>IPTU, energia, compras, aluguel, financiamento e cadastro do imóvel.</p></div>
+          <div class="signal-card"><strong>Elegibilidade vem primeiro</strong><p>Sinal fraco vira pergunta. A recomendação só segue quando o caso é elegível.</p></div>
+          <div class="signal-card"><strong>O motivo acompanha a proposta</strong><p>Fato do cliente, necessidade atendida, valor em jogo e confiança explicada.</p></div>
+        </div>
+      </div>
+      <p class="source">Fluxo: guia oficial do datathon · regra do motor documentada</p><span class="slide-num">02 / 05</span>
+      <aside class="notas"><div class="time">30 segundos</div><p>Começamos com o cadastro do imóvel e sinais como IPTU, conta de luz, compras, aluguel e financiamento. O motor interpreta esses dados e verifica a elegibilidade antes de recomendar. Cada informação fica identificada como observada, estimada ou pendente de confirmação. A confiança ajuda a decidir o que perguntar. O resultado é uma ficha com plano, coberturas, faixas e motivo, que pode ser usada pelo app ou pelo gerente.</p><small>Fonte: README.md; Guia oficial do datathon.</small></aside>
+    </section>
+
+    <section class="slide" data-title="Plano pela necessidade" data-time="0:35">
+      <div class="canvas">
+        <p class="eyebrow">A recomendação</p>
+        <h2>O plano acompanha a <span class="accent">necessidade</span></h2>
+        <p class="sub">Escolhemos o plano mais enxuto que atende às necessidades comprovadas.</p>
+        <div class="needs">
+          <article class="need-card"><span class="n">A</span><img src="assets/ic_casa.png" alt=""><h3>Aluguel em jogo</h3><div class="arrow">→ Plano Total</div><p class="desc">Aluguel pago ou recebido indica a necessidade de proteção para perda de aluguel.</p></article>
+          <article class="need-card"><span class="n">B</span><img src="assets/ic_roubo.png" alt=""><h3>Roubo e vidros</h3><div class="arrow">→ Plano Prático</div><p class="desc">Compras, bens vinculados ou gasto com vidraçaria podem sustentar essa necessidade.</p></article>
+          <article class="need-card"><span class="n">C</span><img src="assets/ic_terceiros.png" alt=""><h3>Danos a terceiros</h3><div class="arrow">→ RC familiar</div><p class="desc">Prédios, condomínios, dependentes ou pet podem indicar RC como adicional.</p></article>
+        </div>
+        <div class="note-band"><span class="dot"></span><span><b>Prédio ou condomínio pode pedir RC familiar.</b> Isso não eleva o plano ao Total por si só.</span></div>
+      </div>
+      <p class="source">Limiares de bens são medianas da base de desenvolvimento; não são limites atuariais</p><span class="slide-num">03 / 05</span>
+      <aside class="notas"><div class="time">35 segundos</div><p>O plano vem da necessidade identificada. Se o aluguel está em jogo, recomendamos o Total, que inclui perda de aluguel. Sinais que sustentam a necessidade de roubo e quebra de vidros podem indicar o Prático. Para danos a terceiros, indicamos responsabilidade civil familiar, que também pode entrar como adicional. Morar em prédio ou condomínio pode apontar para essa cobertura, sem elevar o plano ao Total por si só. Se a recomendação está perto do limite, perguntamos o que pode decidir a escolha.</p><small>Fonte: motor passo a passo; métricas de necessidades e força da recomendação.</small></aside>
+    </section>
+
+    <section class="slide" data-title="Bens e atualidade dos sinais" data-time="0:55">
+      <div class="canvas">
+        <p class="eyebrow">Dados e confiança</p>
+        <h2>Estimativa com origem e <span class="accent">validade</span></h2>
+        <div class="data-grid">
+          <article class="panel">
+            <h3>Como estimamos os bens</h3>
+            <div class="goods-flow">
+              <div class="goods-box"><span class="chip">Sinais observados</span><strong>Compras + bens vinculados</strong><p>Móveis, eletrodomésticos e eletrônicos identificados nas transações.</p></div>
+              <div class="math-arrow">→</div>
+              <div class="goods-box"><span class="chip">Atualização</span><strong>Inflação + faixa</strong><p>IPCA traz compras a valores atuais; a faixa deixa a incerteza visível.</p></div>
+            </div>
+            <div class="range-strip"><div class="range-pill"><strong>Mínimo</strong><span>Maior entre compras e bens ligados ao imóvel</span></div><div class="range-pill"><strong>Máximo</strong><span>Estimativa do estoque de bens da casa</span></div></div>
+            <div class="assumption">O valor real dos bens não tem gabarito na base. O máximo é uma premissa declarada.</div>
+          </article>
+          <article class="panel">
+            <h3>Um sinal antigo pesa menos</h3>
+            <p class="muted" style="font-size:18px;line-height:1.35">A confiança considera a meia-vida de cada tipo de dado.</p>
+            <div class="half-life">
+              <div class="half-row"><strong>Vínculo e uso</strong><div class="half-track"><i style="width:32%"></i></div><em>mais breve</em></div>
+              <div class="half-row"><strong>Bens</strong><div class="half-track"><i style="width:54%"></i></div><em>intermediária</em></div>
+              <div class="half-row"><strong>Área e tipo</strong><div class="half-track"><i style="width:92%"></i></div><em>mais longa</em></div>
+            </div>
+            <div class="fresh-note">Passou da meia-vida? O sinal observado conta como estimado. A confiança pode cair e o app pode pedir confirmação.</div>
+            <p class="fresh-caveat">Na base do datathon, não há datas por registro; nenhum caso foi rebaixado por antiguidade.</p>
+          </article>
+        </div>
+      </div>
+      <p class="source">Fontes: README.md · motor/parametros.py · entrega/assertividade.json</p><span class="slide-num">04 / 05</span>
+      <aside class="notas"><div class="time">55 segundos</div><p>Para estimar os bens, juntamos as compras identificadas com os bens vinculados ao imóvel e atualizamos os valores pela inflação. O mínimo é o maior entre esses dois sinais. Para o máximo, aplicamos um fator de estoque às compras; é uma premissa, pois não temos o valor real de todos os objetos. A confiança também considera a atualidade: vínculo e uso envelhecem mais rápido que os bens, enquanto área e tipo mudam mais devagar. Idade da pessoa não entra na decisão; a antiguidade do sinal, sim. Quando um dado observado ultrapassa sua janela de atualidade, passa a ser estimado e pode pedir confirmação. A base não tem datas por registro para demonstrar esse rebaixamento nos casos. Por isso, explicamos a regra e seu limite.</p><small>Fonte: README.md; motor/parametros.py; assertividade dos cálculos.</small></aside>
+    </section>
+
+    <section class="slide" data-title="Evidências e demonstração" data-time="0:40">
+      <div class="canvas">
+        <p class="eyebrow">Evidência e evolução</p><h2>Uma proposta explicada, <span class="accent">medida</span></h2>
+        <div class="evidence-layout">
+          <div class="evidence-big">
+            <div class="evidence-card"><strong>138/138</strong><span>casos da base comum processados</span></div>
+            <div class="evidence-card"><strong>100%</strong><span>com justificativa e coberturas fixas completas</span></div>
+            <div class="evidence-card"><strong>0</strong><span>falhas ao processar os casos</span></div>
+            <div class="evidence-card"><strong>81%</strong><span>das áreas estimadas dentro da faixa no backtest</span></div>
+            <div class="area-proof" style="grid-column:1/3">
+              <span class="tag">Área estimada · validação cruzada em 5 dobras</span>
+              <div class="compare"><strong>14,1%</strong><span>erro mediano do motor</span><strong style="color:#c4cbff">44,4%</strong><span>chute de referência</span></div>
+              <p>O que medimos é a qualidade de estimativas com gabarito. A base não permite medir a acurácia do plano ou o valor real dos bens.</p>
+            </div>
+          </div>
+          <aside class="limitations">
+            <h3>Próximo passo</h3>
+            <div class="limitation-item"><i></i><span>Calibrar premissas com dados reais de sinistros.</span></div>
+            <div class="limitation-item"><i></i><span>Testar compreensão e conversão em um piloto.</span></div>
+            <div class="limitation-item"><i></i><span>Expandir a mesma ficha para app e gerente.</span></div>
+            <div class="limitation-item"><i></i><span>Idade pessoal fora do cálculo; idade do sinal reduz confiança. IA apoiou pesquisa e revisão.</span></div>
+            <div class="close-line">Agora, vamos ver essa recomendação funcionar no app.</div>
+          </aside>
+        </div>
+      </div>
+      <p class="source">Fontes: entrega/metricas.json · entrega/assertividade.json · base comum de teste</p><span class="slide-num">05 / 05</span>
+      <aside class="notas"><div class="time">40 segundos em slides · 2 minutos no app</div><p>Na base comum, processamos todos os casos sem falhas e completamos justificativas e coberturas fixas. No backtest fora da amostra, a estimativa de área teve erro mediano de 14,1%, contra 44,4% no método de referência; 81% das áreas reais ficaram dentro da faixa. Esses números medem área, não acurácia do plano nem valor real dos bens. O próximo passo é testar compreensão e conversão num piloto e calibrar premissas com sinistros. Agora, vamos sair dos slides e ver a recomendação funcionando no app.</p><div class="demo-timeline"><b>Demonstração ao vivo · siga sem voltar aos slides</b><p><strong>Luana · 35 s.</strong> Abra o caso e diga: “Começo por um percurso pronto. O app já traz a área cadastrada e identificou o aluguel. A análise tem confiança alta e não exige perguntas obrigatórias. Recomendamos o Total porque a perda de aluguel é uma necessidade deste imóvel. Reparem que o motivo aparece junto da proposta. A pessoa entende por que recebeu esse plano e pode seguir para contratar em um toque.” Mostre o botão de contratação sem interromper a demonstração.</p><p><strong>Troca de cliente · 5 s.</strong> Use “Trocar cliente” no cabeçalho da planilha e abra Sérgio.</p><p><strong>Sérgio · 60 s.</strong> Diga: “Aqui há lacunas. A área foi estimada pelo IPTU e pela conta de luz; o padrão construtivo ainda não foi confirmado. Por isso a confiança está média e a recomendação inicial é Essencial, no limite. O app pergunta sobre os eletrônicos e o acabamento, porque as respostas podem alterar a recomendação ou a faixa.” Responda que os eletrônicos passam do limite. Continue: “Com essa confirmação, o motor recalcula e recomenda o Prático, que atende à necessidade de roubo e vidros. A confiança geral continua média: a área e o acabamento ainda são estimados. O app deixa claro o que mudou e o que falta confirmar.” Mostre o motivo atualizado.</p><p><strong>Fechamento · 20 s.</strong> Com o motivo ainda visível, diga: “Nos dois percursos, o cliente vê por que recebeu aquela recomendação. Quando os dados bastam, pode seguir direto. Quando há incerteza, o app pergunta e atualiza a proposta. É assim que combinamos conveniência, explicação e confirmação. Obrigado. Ficamos à disposição para as perguntas.”</p></div><small>Fonte: entrega/metricas.json; entrega/assertividade.json; roteiro da demo do app.</small></aside>
+    </section>
+  </main>
+  <div class="progress" id="progress"></div>
+  <nav class="controls" aria-label="Controles da apresentação"><button id="prev" aria-label="Slide anterior">←</button><span id="counter">1 / 5</span><button id="next" aria-label="Próximo slide">→</button><span>·</span><span>F tela cheia</span><span>·</span><span>N notas</span></nav>
+  <aside id="notesPanel" class="notes-panel" aria-live="polite"></aside>
+  <script>
+    (()=>{const slides=[...document.querySelectorAll('.slide')],stage=document.getElementById('stage'),counter=document.getElementById('counter'),progress=document.getElementById('progress'),notesPanel=document.getElementById('notesPanel');let current=0;
+      function fit(){const scale=Math.min(innerWidth/1920,innerHeight/1080);slides.forEach(s=>{s.style.transform=`translate(-50%,-50%) scale(${scale})`})}
+      function show(i){current=(i+slides.length)%slides.length;slides.forEach((s,n)=>s.classList.toggle('active',n===current));counter.textContent=`${current+1} / ${slides.length}`;progress.style.width=`${((current+1)/slides.length)*100}%`;const note=slides[current].querySelector('.notas');if(note){const copy=note.cloneNode(true);const time=copy.querySelector('.time')?.textContent||slides[current].dataset.time;copy.querySelector('.time')?.remove();copy.className='speaker-note-body';notesPanel.innerHTML=`<h3>${slides[current].dataset.title}</h3><div class="time">${time}</div>${copy.innerHTML}`}else notesPanel.innerHTML=''}
+      function toggleNotes(){notesPanel.classList.toggle('open')}
+      document.getElementById('prev').onclick=()=>show(current-1);document.getElementById('next').onclick=()=>show(current+1);addEventListener('resize',fit);fit();show(0);
+      addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();show(current+1)}else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(current-1)}else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}else if(e.key.toLowerCase()==='n'){toggleNotes()}else if(e.key==='Escape'){notesPanel.classList.remove('open')}});
+      let x0=null;stage.addEventListener('touchstart',e=>{x0=e.changedTouches[0].clientX},{passive:true});stage.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>80)show(current+(dx<0?1:-1));x0=null},{passive:true});
+    })();
+  </script>
+</body>
+</html>

@@ -167,7 +167,7 @@
  "familia_declarada_muda_valor_ou_confianca": 0,
  "sensibilidade_area_10pct_incendio_media_pct": 4.05,
  "sensibilidade_area_casos_com_queda": 0,
- "tempo_segundos": 0.69,
+ "tempo_segundos": 0.99,
  "backtest_fora_da_amostra": {
   "metodo": "validação cruzada em 5 dobras na base de desenvolvimento (aprende em 4/5, mede no 1/5 que não viu)",
   "area_casos": 1016,

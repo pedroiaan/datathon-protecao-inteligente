@@ -12,6 +12,17 @@ Projeto para o **Datathon Proteção Inteligente** (IBMEC + BB Seguros / Brasils
   - Vinicius Ferreira Assunção
 - **Desafio:** Seguro Residencial
 
+## Onde está cada entrega (guia, seção 6)
+| Entregável do guia | Onde está |
+|---|---|
+| Templates preenchidos (138 casos) | `entrega/template_resultado_times.csv` e `entrega/template_coberturas_times.csv` (versão para leitura em Excel: `documentos/planilhas_para_leitura.xlsx`) |
+| README | este arquivo |
+| Códigos | `motor/` (motor de regras em Python), `app-expo/` (app da demonstração), `tests/` (155 testes) |
+| Dependências | `requirements.txt` + `.python-version` (Python 3.11); app: `app-expo/package.json` (Node 22) |
+| Dados externos | `motor/externos/` (cópias) e `motor/externos/FONTES.md` (fonte, data, licença, método, transformação e limitações) |
+| Apresentação | `slides/index.html` (pitch de 5 min) e o vídeo de até 5 min (link na entrega) |
+| Métricas e evidências | `entrega/metricas.json`, `entrega/assertividade.json`, `entrega/casos_contrastantes.json` |
+
 ## Objetivo
 Responder, para cada cliente e imóvel, "quanto proteger esta casa e com qual plano?" usando só o que o banco já sabe: é elegível? qual plano? quais coberturas e com que faixa de valor? o que foi observado, o que foi estimado e o que precisa ser confirmado? por que esse plano e não outro?
 
@@ -27,6 +38,7 @@ python motor/gerar.py --entrega     # gera, valida e copia as planilhas para ent
 ```
 
 - **App (demonstração do vídeo):** Node 22. Na pasta `app-expo/`: `npm install` e `npx expo start --web`, depois abra `http://localhost:8081` numa janela larga. O app aparece dentro de um iPhone, com a planilha que o motor gerou para o cliente ao lado e um menu com os 2 casos do vídeo. No celular: Expo Go + `npx expo start`. Para atualizar as fichas do app depois de mudar o motor: `python motor/gerar.py --entrega` e `npm run dados` (em `app-expo/`).
+- **Slides:** abra `slides/index.html` no navegador (← → para navegar, F tela cheia, N notas do apresentador). Instruções em `slides/README.md`.
 - **Demo antiga (HTML):** abra `prototipos/indexprototipo_gerente.html` com dois cliques. Os botões A, B e C mostram os perfis do slide 14 com a ficha real do motor.
 - **API (opcional):** `pip install -r requirements-api.txt` e `uvicorn api:app --app-dir motor --port 8000`. Documentação em `/docs`.
 - Os testes também rodam sozinhos no GitHub a cada envio (`.github/workflows/testes.yml`).
@@ -60,7 +72,12 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 | `motor/api.py` | API de demonstração (ficha e recálculo com as respostas do cliente) |
 | `motor/externos/` | Fontes externas salvas + `FONTES.md` (fonte, data, licença, método, limitações) |
 | `entrega/` | As 2 planilhas, `metricas.json`, `casos_contrastantes.json` e `assertividade.json` |
-| `tests/` | Testes automáticos |
+| `tests/` | Testes automáticos (motor, assertividade, motivo, API e coletor) |
+| `app-expo/` | App do cliente e portal do gerente (Expo/React Native). No navegador largo mostra, ao lado do iPhone, a planilha que o motor gerou para o cliente |
+| `slides/` | Slides do pitch (HTML) |
+| `prototipos/` | Protótipo HTML anterior e `fichas_demo.js` (fichas do motor para os apps, geradas pelo `gerar.py`) |
+| `obsidian/` | Vault do time: regras de negócio, decisões, explicação de cada cálculo do zero, pitch (abra a pasta no Obsidian) |
+| `dados/` | Bases da organização (fictícias): desenvolvimento e Teste Comum |
 | `documentos/contexto/` | Um documento curto por etapa (comece pelo `00-mapa.md`) |
 
 ## Premissas principais
@@ -134,6 +151,12 @@ Tudo em `entrega/metricas.json`.
 
 **Reprodutibilidade:** as planilhas entregues usam os dados externos salvos no repositório (SINAPI set/2026, IPCA até set/2026). Rodar `python motor/externos/coletar.py --ao-vivo` renova essas fontes pelas APIs e, de propósito, muda as faixas; sem o coletor, duas gerações dão arquivos idênticos.
 
+## Resultados: os 2 casos da demonstração
+| Cliente (nome da demo) | Caso | O que mostra |
+|---|---|---|
+| Luana · apartamento de 50 m² em Goiânia | `IMO_CASO_00036_02` | Dados completos: plano Total (paga aluguel), confiança alta, **nenhuma pergunta**, contrata em 1 toque |
+| Sérgio · casa em Porto Alegre | `IMO_CASO_00015_01` | Área estimada e padrão desconhecido: Essencial **no limite**, confiança média, **2 perguntas feitas para ele**; ao responder que os eletrônicos passam de R$ 10 mil, o plano sobe para o Prático na hora |
+
 ## Resultados: casos contrastantes (slide 14)
 | Perfil | Caso | Plano | Por quê |
 |---|---|---|---|
@@ -162,7 +185,15 @@ Usamos ferramentas de IA **como apoio**. Todas as regras, os parâmetros, as dec
 | Desenvolver o app (Expo) | Claude Code | Telas, painel-planilha da demonstração e correções | Testamos as jornadas no navegador |
 | Ilustrações e ícones do app | ChatGPT (geração de imagens) | Imagens no estilo do app, a partir de um prompt nosso (`app-expo/assets/ilustracoes/PROMPT_ChatGPT.md`) | Escolhemos, recortamos e revisamos as imagens |
 | Verificar APIs e fontes externas | Claude | Pesquisa de fontes públicas e conferência das APIs (IBGE/SIDRA, Banco Central/SGS, ANEEL, Atlas de Desastres) | Testamos cada API; fonte, data, licença e limitações em `motor/externos/FONTES.md`. Uma fonte de imprensa foi descartada por não ser auditável |
-| Slides e pitch | Claude | Estrutura do pitch e rascunho dos slides | Revisamos o conteúdo e apresentamos com as nossas palavras |
+| Slides e pitch | Claude e Codex (OpenAI) | Claude estruturou o roteiro e escreveu o prompt de design; o Codex gerou `slides/index.html` com as cores, fontes e ilustrações do app | Escolhemos a ordem final (5 slides + demonstração ao vivo), conferimos cada número com `entrega/metricas.json` e apresentamos com as nossas palavras |
+
+**Em que momentos a IA mais ajudou:**
+- **Leitura do guia e das regras:** transformar o guia, as condições gerais e a mentoria em regras de negócio numeradas (RN-01 a RN-58), que viraram a base das decisões.
+- **Auditorias e QA:** revisões de código encontraram erros que corrigimos antes da entrega (ex.: a faixa do incêndio que somava o pior caso da área e do padrão; o texto do motivo que citava um valor que o cliente não tinha visto; um pacote de assistência a menos no Prático do app).
+- **Medir em vez de supor:** a validação em 5 dobras de cada cálculo de dado faltante (`motor/assertividade.py`) e o teste do motor sem internet.
+- **Fontes externas:** encontrar as APIs oficiais (IBGE, Banco Central) e conferir licença e data; descartamos uma fonte de imprensa que não dava para auditar.
+- **App e demonstração:** telas, correções de navegação no navegador e o painel que mostra a planilha do motor ao lado do app.
+- **Documentação:** o vault do Obsidian explica cada cálculo do zero, para todos do time saberem defender a solução.
 
 **O que a IA não faz na solução:** o motor não chama nenhum modelo de IA. Ele é feito de regras determinísticas: a mesma entrada gera sempre a mesma saída, sem enviar dado de cliente a serviço externo. A base usada é a fictícia fornecida pela organização.
 

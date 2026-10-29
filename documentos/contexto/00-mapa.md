@@ -30,6 +30,7 @@ O índice e a linha do tempo. Comece por aqui. Cada etapa tem um documento curto
 | 26 | A assertividade de cada cálculo e o motivo feito para você | [26-assertividade-e-motivo.md](26-assertividade-e-motivo.md) | ✅ |
 | 27 | Sinistros da BB fora e o motor sem as fontes externas | [27-sinistros-fora-e-fontes.md](27-sinistros-fora-e-fontes.md) | ✅ |
 | 28 | Demo do vídeo: o app e a planilha do motor, lado a lado | [28-demo-app-e-planilha.md](28-demo-app-e-planilha.md) | ✅ |
+| 29 | QA final e organização para a entrega | [29-qa-final-e-entrega.md](29-qa-final-e-entrega.md) | ✅ |
 | 90 | Revisão do time (comece por aqui amanhã) | [90-revisao.md](90-revisao.md) | 📋 para revisar |
 
 ## Onde está cada coisa

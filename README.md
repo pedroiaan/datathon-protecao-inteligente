@@ -3,10 +3,14 @@
 Projeto para o **Datathon Proteção Inteligente** (IBMEC + BB Seguros / Brasilseg).
 
 ## Equipe
-- **Nome da equipe:** Os Varetas
-- **Integrantes:** _(preencher com nome completo de cada um)_
+- **Nome da equipe:** Varetas
+- **Integrantes:**
+  - Eduardo Vieira Ponce Firmino
+  - Luís Guilherme Lebedeff
+  - Matheus Ferreira de Souza
+  - Pedro Ian Guedes Carvalho
+  - Vinicius Ferreira Assunção
 - **Desafio:** Seguro Residencial
-- **Instituição / turma:** _(preencher)_
 
 ## Objetivo
 Responder, para cada cliente e imóvel, "quanto proteger esta casa e com qual plano?" usando só o que o banco já sabe: é elegível? qual plano? quais coberturas e com que faixa de valor? o que foi observado, o que foi estimado e o que precisa ser confirmado? por que esse plano e não outro?

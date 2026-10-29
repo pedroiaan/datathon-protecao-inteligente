@@ -6,8 +6,8 @@ import { FICHAS } from "../dados/contrato";
 import { estadoDoCaso, perguntasDaTela, useEstado } from "../logica/estado";
 import { NOME_CASO, NOME_CLIENTE, PLANOS } from "../logica/produto";
 import { cidade, NOME_TIPO } from "../logica/textos";
+import { C, F } from "./tema";
 
-const FONTE = "Segoe UI, Calibri, Aptos, Arial, sans-serif";
 const FD: any = FICHAS;
 
 export function MenuDemo({ onFechar }: { onFechar: () => void }) {
@@ -22,11 +22,11 @@ export function MenuDemo({ onFechar }: { onFechar: () => void }) {
   return (
     // fundo escuro e desfocado: o app e a planilha ficam atrás, sem disputar atenção com os 2 cartões
     <View style={{ position: "absolute", inset: 0, backgroundColor: "rgba(12,16,40,0.86)", backdropFilter: "blur(8px)", alignItems: "center", justifyContent: "center", zIndex: 100 } as any}>
-      <View style={{ width: 760, maxWidth: "94%", backgroundColor: "#fff", borderRadius: 14, padding: 28, gap: 18 } as any}>
+      <View style={{ width: 760, maxWidth: "94%", backgroundColor: "#fff", borderRadius: 28, padding: 28, gap: 18 } as any}>
         <View style={{ gap: 4 }}>
-          <Text style={{ fontFamily: FONTE, fontSize: 13, color: "#465EFF", fontWeight: "700", letterSpacing: 1 }}>DEMONSTRAÇÃO · SEGURO RESIDENCIAL</Text>
-          <Text style={{ fontFamily: FONTE, fontSize: 24, fontWeight: "700", color: "#1F1F1F" }}>Qual cliente vamos atender?</Text>
-          <Text style={{ fontFamily: FONTE, fontSize: 14.5, color: "#616161" }}>Dois casos reais da base Teste Comum. O app à esquerda e, à direita, a planilha que o motor gerou para o mesmo cliente. Para voltar aqui: recarregue a página ou aperte M.</Text>
+          <Text style={{ fontFamily: F.s, fontSize: 13, color: "#465EFF", letterSpacing: 1 }}>DEMONSTRAÇÃO · SEGURO RESIDENCIAL</Text>
+          <Text style={{ fontFamily: F.x, fontSize: 26, color: "#1F1F1F" }}>Qual cliente vamos atender?</Text>
+          <Text style={{ fontFamily: F.r, fontSize: 14.5, color: "#616161" }}>Dois casos reais da base Teste Comum. O app à esquerda e, à direita, a planilha que o motor gerou para o mesmo cliente. Para voltar aqui: recarregue a página ou aperte M.</Text>
         </View>
         <View style={{ flexDirection: "row", gap: 16, flexWrap: "wrap" }}>
           {video.map((k) => {
@@ -34,23 +34,23 @@ export function MenuDemo({ onFechar }: { onFechar: () => void }) {
             const area = f.campos.area.natureza === "ESTIMADO" ? `≈ ${f.campos.area.valor} m² (estimada)` : `${f.campos.area.valor} m² (cadastrada)`;
             return (
               <Pressable key={k} onPress={() => escolher(k)} accessibilityRole="button"
-                style={({ hovered }: any) => ({ flex: 1, minWidth: 300, borderWidth: 2, borderColor: hovered ? "#465EFF" : "#D4D4D4", borderRadius: 12, padding: 18, gap: 10, backgroundColor: hovered ? "#F3F6FF" : "#fff" })}>
-                <Text style={{ fontFamily: FONTE, fontSize: 13, fontWeight: "700", color: "#465EFF" }}>{NOME_CASO[k] || k}</Text>
-                <Text style={{ fontFamily: FONTE, fontSize: 19, fontWeight: "700", color: "#1F1F1F" }}>{NOME_CLIENTE[k] || f.cliente_id}</Text>
-                <Text style={{ fontFamily: FONTE, fontSize: 14, color: "#404040" }}>{NOME_TIPO[f.campos.tipo.valor]} em {cidade(f)} · {area}</Text>
+                style={({ hovered }: any) => ({ flex: 1, minWidth: 300, borderWidth: 2, borderColor: hovered ? "#465EFF" : "#D4D4D4", borderRadius: 20, padding: 18, gap: 10, backgroundColor: hovered ? "#F3F6FF" : "#fff" })}>
+                <Text style={{ fontFamily: F.s, fontSize: 13, color: "#465EFF" }}>{NOME_CASO[k] || k}</Text>
+                <Text style={{ fontFamily: F.x, fontSize: 20, color: "#1F1F1F" }}>{NOME_CLIENTE[k] || f.cliente_id}</Text>
+                <Text style={{ fontFamily: F.r, fontSize: 14, color: "#404040" }}>{NOME_TIPO[f.campos.tipo.valor]} em {cidade(f)} · {area}</Text>
                 <View style={{ gap: 4 }}>
                   {[["Plano do motor", `${PLANOS[f.plano as keyof typeof PLANOS].nome}${f.forca === "no_limite" ? " (no limite)" : ""}`],
                     ["Confiança", f.confianca.replace("MEDIA", "MÉDIA")],
                     ["Perguntas no app", ps.length ? `${ps.length}: ${ps.map((p: any) => p.codigo === "DECIDE_PLANO" ? "decide o plano" : p.codigo === "PADRAO" ? "acabamento" : p.codigo.toLowerCase()).join(", ")}` : "nenhuma: contrata em 1 toque"],
                     ["Imóvel", f.imovel_id]].map(([r, v]) => (
                     <View key={r} style={{ flexDirection: "row", gap: 8 }}>
-                      <Text style={{ fontFamily: FONTE, fontSize: 13, color: "#757575", width: 118 }}>{r}</Text>
-                      <Text style={{ fontFamily: FONTE, fontSize: 13, color: "#1F1F1F", fontWeight: "600", flex: 1 }}>{v}</Text>
+                      <Text style={{ fontFamily: F.r, fontSize: 13, color: "#757575", width: 118 }}>{r}</Text>
+                      <Text style={{ fontFamily: F.b, fontSize: 13, color: "#1F1F1F", flex: 1 }}>{v}</Text>
                     </View>
                   ))}
                 </View>
-                <View style={{ backgroundColor: "#465EFF", borderRadius: 6, paddingVertical: 9, alignItems: "center", marginTop: 4 }}>
-                  <Text style={{ fontFamily: FONTE, color: "#fff", fontWeight: "700", fontSize: 14 }}>Começar por este caso</Text>
+                <View style={{ backgroundColor: C.amarelo, borderRadius: 999, paddingVertical: 11, alignItems: "center", marginTop: 4 }}>
+                  <Text style={{ fontFamily: F.s, color: C.azulEscuro, fontSize: 14, letterSpacing: 0.6, textTransform: "uppercase" }}>Começar por este caso</Text>
                 </View>
               </Pressable>
             );
@@ -61,16 +61,3 @@ export function MenuDemo({ onFechar }: { onFechar: () => void }) {
   );
 }
 
-/** Botão fixo no canto da tela (fora do iPhone e da planilha) para trocar de cliente a qualquer momento. */
-export function BotaoTrocarCliente({ onPress }: { onPress: () => void }) {
-  const { s } = useEstado();
-  return (
-    <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel="Trocar o cliente da demonstração"
-      style={({ hovered, pressed }: any) => ({ position: "absolute", top: 16, left: 16, zIndex: 90, flexDirection: "row", alignItems: "center", gap: 8,
-        backgroundColor: hovered ? "#2D37F5" : "#465EFF", borderRadius: 999, paddingHorizontal: 14, paddingVertical: 8,
-        boxShadow: "0 4px 14px rgba(28,34,102,0.25)", transform: [{ scale: pressed ? 0.96 : 1 }] })}>
-      <Text style={{ fontFamily: FONTE, color: "#fff", fontSize: 13, fontWeight: "700" }}>⇄  Trocar cliente</Text>
-      <Text style={{ fontFamily: FONTE, color: "#D9E1FF", fontSize: 12.5 }}>{NOME_CLIENTE[s.caso] || s.f.cliente_id}</Text>
-    </Pressable>
-  );
-}

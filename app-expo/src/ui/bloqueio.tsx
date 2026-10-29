@@ -3,7 +3,7 @@ import { Feather } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { StatusBar } from "expo-status-bar";
 import { useMemo } from "react";
-import { Pressable, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { haptic, T, Toque } from "./base";
@@ -16,10 +16,13 @@ function Notificacao({ a, i }: { a: Aviso; i: number }) {
   const entering = useMemo(() => FadeInDown.duration(480).delay(300 + i * 220).easing(EASE_OUT), [i]);
   return (
     <Animated.View entering={entering}>
-      <Toque onPress={() => { haptic.leve(); a.onPress(); }} style={{ borderRadius: 22, overflow: "hidden", marginBottom: 10 }}>
+      {/* clipPath + isolation: no navegador, o desfoque (backdrop-filter) dentro do iPhone em escala ignorava o
+          canto arredondado e o azul do fundo vazava nas pontas do balão */}
+      <Toque onPress={() => { haptic.leve(); a.onPress(); }}
+        style={{ borderRadius: 22, overflow: "hidden", marginBottom: 10, ...(Platform.OS === "web" ? { clipPath: "inset(0 round 22px)", isolation: "isolate", outlineStyle: "none" } : null) } as any}>
         {/* vidro das notificações do iOS: desfoque fixo (nunca animado) + véu claro */}
-        <BlurView intensity={50} tint="light" style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }} />
-        <View style={{ backgroundColor: "rgba(245,246,250,0.72)", padding: 14 }}>
+        <BlurView intensity={50} tint="light" style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 22, overflow: "hidden" }} />
+        <View style={{ backgroundColor: "rgba(245,246,250,0.72)", padding: 14, borderRadius: 22 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 6 }}>
           <View style={{ width: 22, height: 22, borderRadius: 6, alignItems: "center", justifyContent: "center", backgroundColor: a.app === "BB" ? C.amarelo : "#25D366" }}>
             {a.app === "BB" ? <T s={{ fontFamily: F.k, fontSize: 10, color: C.azulEscuro, lineHeight: 12 }}>BB</T> : <Feather name="message-circle" size={13} color="#fff" />}

@@ -1,13 +1,14 @@
 // Painel-planilha da demonstração (só no navegador largo, ao lado do iPhone): mostra, a cada tela,
 // a linha EXATA das 2 planilhas de entrega que o motor gerou para este cliente (template_resultado_times.csv
 // e template_coberturas_times.csv) e a parte do motivo que a tela usa.
-// Só acompanha o app: não rola, não tem aba clicável e não aceita toque (pointerEvents "none"),
+// Só acompanha o app: não rola e não tem aba clicável; o único clique é o "Trocar cliente" do cabeçalho,
 // para o vídeo ser gravado sem edição. Tem a cara de planilha (letras, números de linha, grade),
 // com as cores e as fontes do app.
 import { usePathname } from "expo-router";
-import { Text, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { Pressable, Text, View } from "react-native";
 import { Estado, nivelDaAnalise, perguntasDaTela, useEstado } from "../logica/estado";
-import { COB, MAPA_COB, PLANOS } from "../logica/produto";
+import { COB, MAPA_COB, NOME_CLIENTE, PLANOS } from "../logica/produto";
 import { C, F } from "./tema";
 
 type Aba = "resultado" | "coberturas" | "motivo";
@@ -106,7 +107,7 @@ function indicadores(s: Estado) {
   ];
 }
 
-export function PainelPlanilha() {
+export function PainelPlanilha({ onTrocar }: { onTrocar: () => void }) {
   const { s } = useEstado();
   const rota = usePathname();
   const etapa = (ETAPAS.find((x) => x.rota.test(rota)) || ETAPAS[0]).e;
@@ -143,18 +144,26 @@ export function PainelPlanilha() {
   }
 
   return (
-    <View pointerEvents="none" style={{ flex: 1, backgroundColor: C.branco, borderRadius: 28, overflow: "hidden",
+    <View pointerEvents="box-none" style={{ flex: 1, backgroundColor: C.branco, borderRadius: 28, overflow: "hidden", userSelect: "none",
       boxShadow: "0 1px 2px rgba(28,34,102,0.06), 0 12px 40px rgba(28,34,102,0.14)" } as any}>
       {/* Cabeçalho: de onde vêm os dados e a etapa do app */}
       <View style={{ backgroundColor: C.noite, paddingHorizontal: 22, paddingTop: 16, gap: 12 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
           <View style={{ flex: 1, gap: 2 }}>
-            <Text style={{ fontFamily: F.s, fontSize: 11.5, letterSpacing: 1.2, color: C.azulSuave, textTransform: "uppercase" }}>Planilha gerada pelo motor</Text>
+            <Text style={{ fontFamily: F.s, fontSize: 11.5, letterSpacing: 1.2, color: C.azulSuave, textTransform: "uppercase" }}>Planilha gerada pelo motor · {NOME_CLIENTE[s.caso] || f.cliente_id}</Text>
             <Text numberOfLines={1} style={{ fontFamily: F.x, fontSize: 19, color: C.branco }}>{cidadeUf} · {f.imovel_id}</Text>
           </View>
-          <View style={{ backgroundColor: C.amarelo, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 5 }}>
+          <View style={{ backgroundColor: C.amarelo, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6 }}>
             <Text style={{ fontFamily: F.s, fontSize: 12.5, color: C.noite }}>Tela: {etapa.nome}</Text>
           </View>
+          {/* o único controle do painel: trocar o cliente da demonstração (fora do iPhone, no estilo do app) */}
+          <Pressable onPress={onTrocar} accessibilityRole="button" accessibilityLabel={`Trocar o cliente. Agora: ${NOME_CLIENTE[s.caso] || f.cliente_id}`}
+            style={({ hovered, pressed }: any) => ({ flexDirection: "row", alignItems: "center", gap: 7, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6,
+              backgroundColor: hovered ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.1)", borderWidth: 1, borderColor: "rgba(255,255,255,0.28)",
+              transform: [{ scale: pressed ? 0.96 : 1 }], transitionProperty: "background-color, transform", transitionDuration: "150ms", cursor: "pointer" } as any)}>
+            <Feather name="repeat" size={14} color={C.branco} />
+            <Text style={{ fontFamily: F.s, fontSize: 12.5, color: C.branco }}>Trocar cliente</Text>
+          </Pressable>
         </View>
         {/* abas só indicam o arquivo da tela (não são clicáveis) */}
         <View style={{ flexDirection: "row", gap: 20 }}>

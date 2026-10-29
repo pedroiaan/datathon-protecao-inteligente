@@ -9,7 +9,7 @@ pasta: app-expo/
 > [!tip] Como gravar (sem editar o vídeo depois)
 > 1. Na pasta `app-expo/`: `npm install` (só na primeira vez) e `npx expo start --web`.
 > 2. Abra `http://localhost:8081` numa janela larga (1600 × 900 fica ótimo).
-> 3. Aparece o **menu da demonstração**: escolha o caso e grave. Para trocar de cliente a qualquer momento: o botão **Trocar cliente**, no canto superior esquerdo (fora do iPhone e da planilha), ou a tecla **M**, ou recarregar a página.
+> 3. Aparece o **menu da demonstração**: escolha o caso e grave. Para trocar de cliente a qualquer momento: o botão **Trocar cliente**, no cabeçalho da planilha (ao lado do selo da tela), ou a tecla **M**, ou recarregar a página.
 > 4. O app fica à **esquerda** (dentro de um iPhone) e a **planilha do motor** à **direita**, mudando a cada tela.
 
 > [!info] A planilha só acompanha o app (29/10)
@@ -83,3 +83,8 @@ Ligações: [[App Expo - app de verdade no celular]] · [[Portal do gerente]] ·
 
 ## Correção do Passo 2 (29/10)
 No navegador, a lista de situações (alagamento, queda de raio, danos a terceiros…) não deslizava: o mouse não arrasta listas laterais e a rodinha rolava a página. Agora (`src/ui/carrossel.tsx`) dá para **arrastar com o mouse**, usar a **rodinha** e, ao escolher uma situação, ela é **centralizada**. Vale também para a faixa de assistências. No celular nada muda.
+
+## Acabamento final (29/10)
+- **Trocar cliente** foi para o cabeçalho da planilha, no estilo do app (pílula translúcida com ícone). É o único clique do painel.
+- **Menu dos casos** com as fontes e as cores do app (Nunito nos títulos, Figtree no texto, botão amarelo do BB).
+- **Notificações:** os cantos do balão mostravam o azul do fundo, porque o desfoque (`backdrop-filter`) do navegador ignorava o canto arredondado dentro do iPhone em escala. Corrigido em `src/ui/bloqueio.tsx` com `clipPath` e o raio no próprio desfoque.

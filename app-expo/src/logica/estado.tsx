@@ -58,6 +58,18 @@ export function nivelDaAnalise(s: Estado) {
 
 export const sugeridoDe = (s: Estado, k: Cob) => sugerido(k, s.faixa[k]);
 
+/** Guarda a resposta do cliente. A pergunta decisiva (recomendação "no limite" no motor) muda o plano
+ *  como a regra do motor: no Essencial, "sim, passam do limite" acende a necessidade de roubo e o
+ *  plano sobe para o Prático; a faixa do roubo vem dos eletrônicos comprovados da própria ficha. */
+export function responder(s: Estado, cod: string, op: string): Estado {
+  const x = { ...s, resp: { ...s.resp, [cod]: op } };
+  if (cod !== "DECIDE_PLANO" || s.f.plano !== "ESSENCIAL") return x;
+  const sobe = op.startsWith("Sim"), p = s.f.campos.bens.portateis;
+  const faixa = { ...x.faixa, roubo: sobe && p ? [p.min, p.max] as [number, number] : x.faixa.roubo };
+  const valores = { ...x.valores, roubo: sugerido("roubo", faixa.roubo) };
+  return { ...x, plano: sobe ? "PRATICO" : "ESSENCIAL", rec: sobe ? "PRATICO" : "ESSENCIAL", faixa, valores };
+}
+
 export function incluidas(s: Estado, plano: Plano = s.plano): Cob[] {
   const l = [...FIXAS, ...PLANOS[plano].extras];
   if (plano !== "TOTAL" && s.ligadas.rc && !l.includes("rc")) l.push("rc");

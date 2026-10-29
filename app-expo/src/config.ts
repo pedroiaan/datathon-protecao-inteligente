@@ -5,4 +5,7 @@ export const DEMO = {
   animarSempre: true,
   /** No navegador largo, mostra o app dentro de uma moldura de iPhone. */
   molduraNoNavegador: true,
+  /** No navegador largo, mostra ao lado do iPhone a planilha que o motor gerou para o caso
+   *  (src/ui/planilha.tsx) e abre o menu dos 2 casos do vídeo antes da notificação. */
+  planilhaAoLado: true,
 };

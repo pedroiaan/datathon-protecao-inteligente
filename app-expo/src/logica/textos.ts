@@ -81,11 +81,13 @@ export function origem(d: any) {
   return d.classe === "OBSERVADO" ? "cadastro" : "estimado";
 }
 
+export const DECIDE_SIM = "Sim, passam do limite";
+export const DECIDE_NAO = "Não, ficam abaixo";
 export const OPCOES: Record<string, string[]> = {
   BENS: ["Sim, por aí", "É menos", "É mais"], AREA: ["Confere", "Não, é outra"], PADRAO: ["Simples", "Normal", "Alto padrão"],
   USO: ["Moro aqui", "É de veraneio", "Está alugado"], VINCULO: ["Sim", "Não"], RC_FAMILIA: ["Quero", "Agora não"],
   SEGURO_EXISTENTE: ["Não", "Sim"], POSSIVEL_REFORMA: ["Não", "Sim, está em obra"], RECEBE_ALUGUEL: ["Sim", "Não"],
-  TIPO: ["Apartamento", "Casa"], MATERIAL: ["Sim", "Não"],
+  TIPO: ["Apartamento", "Casa"], MATERIAL: ["Sim", "Não"], DECIDE_PLANO: ["Não, ficam abaixo", "Sim, passam do limite"],
 };
 
 export const NOME_VINCULO: Record<string, string> = { INQUILINO: "Alugado, você é inquilino", FINANCIADO: "Seu, financiado", PROPRIETARIO: "Seu, quitado", PROPRIETARIO_LOCADOR: "Seu, alugado para outra pessoa" };
@@ -112,6 +114,11 @@ export function perguntaCliente(p: any, f: any): { texto: string; ajuda?: string
     case "SEGURO_EXISTENTE": return { texto: "Você já tem outro seguro para este imóvel?", ajuda: "Vimos pagamentos que parecem de um seguro residencial. Dois seguros para o mesmo bem não somam a indenização.", opcoes: ["Não tenho", "Sim, já tenho"],
       notas: { "Sim, já tenho": "Tudo bem. Compare com o que você tem: se ficar com este, cancele o outro para não pagar duas vezes." } };
     case "RC_FAMILIA": return { texto: p.texto, opcoes: ["Quero essa proteção", "Agora não"] };
+    // Recomendação "no limite" (motor: força no_limite): a resposta decide entre o plano indicado e o de cima
+    case "DECIDE_PLANO": return { texto: p.texto, ajuda: "Seu valor ficou perto do limite que separa os planos. A sua resposta decide qual serve melhor.",
+      opcoes: [DECIDE_NAO, DECIDE_SIM],
+      notas: { [DECIDE_SIM]: "Então o Prático passa a ser o indicado: ele soma roubo com arrombamento e quebra de vidros.",
+               [DECIDE_NAO]: "Então o plano indicado continua o mesmo. Roubo e vidros você pode somar depois em Personalizar." } };
     default: return { texto: p.texto, opcoes: OPCOES[p.codigo] || ["Sim", "Não"] };
   }
 }

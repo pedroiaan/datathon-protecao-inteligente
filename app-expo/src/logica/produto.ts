@@ -40,10 +40,12 @@ export const GERENTE = { nome: "Ricardo", inicial: "RG" };
 export const NOME_CLIENTE: Record<string, string> = {
   perfil_A_apto_urbano: "Beatriz Lima", perfil_B_casa_familiar: "Davi e Ana Rocha", perfil_C_casa_lazer: "Marta Souza",
   nao_elegivel_seguro_existente: "Jorge Almeida", one_click_limpo: "Paulo Mendes", inquilino_total: "Carla Nunes", elegibilidade_a_confirmar: "Rui Costa",
+  demo_1_tudo_pronto: "Luana Prado", demo_2_faltam_dados: "Sérgio Becker",
 };
 /** Nome de cada cenário da demonstração; a cidade vem da própria ficha (rotuloCaso em textos.ts). */
 export const NOME_CASO: Record<string, string> = {
   perfil_A_apto_urbano: "A · Apto urbano", perfil_B_casa_familiar: "B · Casa familiar", perfil_C_casa_lazer: "C · Imóvel de lazer",
   one_click_limpo: "Sem pendências", inquilino_total: "Inquilino", nao_elegivel_seguro_existente: "Já tem seguro",
   elegibilidade_a_confirmar: "Possível reforma",
+  demo_1_tudo_pronto: "1 · Já sabemos tudo", demo_2_faltam_dados: "2 · Faltam dados",
 };

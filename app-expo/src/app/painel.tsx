@@ -43,7 +43,7 @@ export default function Painel() {
           </View>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: C.branco, borderRadius: 14, paddingHorizontal: 14, height: 48 }}>
             <Feather name="search" size={18} color={C.suave} />
-            <TextInput value={busca} onChangeText={setBusca} placeholder="Código do cliente (SR-...) ou nome" placeholderTextColor={C.apagado}
+            <TextInput value={busca} onChangeText={setBusca} placeholder="Código (SR-RS-ESS-0015-1), parte dele ou nome" placeholderTextColor={C.apagado}
               autoCapitalize="characters" autoCorrect={false} accessibilityLabel="Buscar pelo código do cliente ou pelo nome"
               style={{ flex: 1, fontFamily: F.m, fontSize: 15.5, color: C.texto, outlineStyle: "none" } as any} />
             {busca ? <Toque onPress={() => setBusca("")} rotulo="Limpar busca"><Feather name="x-circle" size={18} color={C.suave} /></Toque> : null}
@@ -52,7 +52,20 @@ export default function Painel() {
       }>
       <Titulo antes="Pedidos de " destaque="seguro" />
       <Entra i={1}><T s={{ color: C.suave, fontSize: 15, marginBottom: 14 }}>Cada cliente tem um código. Abra o pedido: a ficha do motor e o que ele montou no app já vêm preenchidos.</T></Entra>
-      <Rotulo>{busca ? `${vistos.length} encontrado${vistos.length === 1 ? "" : "s"}` : `${fila.length} pedidos`}</Rotulo>
+      {!busca ? (
+        <Entra i={1}>
+          <View style={{ flexDirection: "row", gap: 8, marginBottom: 14 }}>
+            {[[String(fila.length), "pedidos"], [String(fila.filter((x) => x.prioridade.nivel === 0).length), "precisam de você"],
+              [String(fila.filter((x) => x.prioridade.nivel === 2).length), "prontos (1 toque)"]].map(([n, r]) => (
+              <View key={r} style={{ flex: 1, backgroundColor: C.branco, borderRadius: 14, padding: 12, borderWidth: 1, borderColor: C.borda }}>
+                <T s={{ fontFamily: F.x, fontSize: 22, color: C.azul }}>{n}</T>
+                <T s={[TIPO.legenda, { color: C.suave }]}>{r}</T>
+              </View>
+            ))}
+          </View>
+        </Entra>
+      ) : null}
+      <Rotulo>{busca ? `${vistos.length} encontrado${vistos.length === 1 ? "" : "s"}` : "Fila: o que trava a contratação primeiro"}</Rotulo>
       {vistos.map((p, i) => (
         <Card key={p.codigo} i={2 + i} style={{ padding: 0 }}>
           <Toque onPress={() => abrir(p.codigo)} rotulo={`Abrir pedido de ${p.nome}, código ${p.codigo}`} style={{ flexDirection: "row", alignItems: "center", gap: 12, padding: 16 }}>
@@ -66,12 +79,13 @@ export default function Painel() {
               </View>
               <T s={[TIPO.apoio, { color: C.suave }]} numberOfLines={1}>{NOME_TIPO[p.f.campos.tipo.valor] || "Imóvel"} · {cidade(p.f)} · {PLANOS[p.f.plano as keyof typeof PLANOS].nome}</T>
               <T s={[TIPO.legenda, { color: C.azul, letterSpacing: 0.6 }]}>{p.codigo} · {p.quando}</T>
+              <T s={[TIPO.legenda, { color: p.prioridade.nivel === 0 ? "#B3261E" : C.suave }]}>{p.prioridade.rotulo}</T>
             </View>
             <Feather name="chevron-right" size={20} color={C.suave} />
           </Toque>
         </Card>
       ))}
-      {busca && !vistos.length ? <T s={{ color: C.suave, textAlign: "center", marginTop: 20 }}>Nenhum cliente com esse código. Confira as letras: o código não usa 0, O, 1, I nem L.</T> : null}
+      {busca && !vistos.length ? <T s={{ color: C.suave, textAlign: "center", marginTop: 20 }}>Nenhum cliente com esse código. Ele é SR · estado · plano · número do caso: tente só o estado (RS) ou o número (0015).</T> : null}
       <View style={{ flexDirection: "row", gap: 8, alignItems: "center", marginTop: 14, paddingHorizontal: 4 }}>
         <Feather name="lock" size={14} color={C.suave} />
         <T s={{ flex: 1, fontSize: 12.5, color: C.suave, lineHeight: 17 }}>Visível só para o gerente do cliente. Renda e idade não aparecem: não entram na análise.</T>

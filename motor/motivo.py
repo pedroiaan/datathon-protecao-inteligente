@@ -312,45 +312,51 @@ def risco_do_lugar(f):
 
 def _cabe(partes, limite=None):
     """Tira as frases menos importantes até o texto caber em `limite` palavras.
-    `partes`: (prioridade, texto) na ordem de leitura; quanto menor a prioridade, antes sai.
+    `partes`: (prioridade, nome, texto) na ordem de leitura; quanto menor a prioridade, antes sai.
     As de prioridade 90 ou mais (abertura, porquê, o que fica descoberto, confirmação, confiança) nunca saem."""
     limite = limite or MAX_PALAVRAS
-    partes = [(p, t) for p, t in partes if t]
-    while sum(len(t.split()) for _, t in partes) > limite:
-        tiravel = [p for p, _ in partes if p < 90]
+    partes = [(p, n, t) for p, n, t in partes if t]
+    while sum(len(t.split()) for _, _, t in partes) > limite:
+        tiravel = [p for p, _, _ in partes if p < 90]
         if not tiravel:
             break
         menor = min(tiravel)
-        partes.pop(next(i for i, (p, _) in enumerate(partes) if p == menor))
-    return " ".join(t for _, t in partes)
+        partes.pop(next(i for i, (p, _, _) in enumerate(partes) if p == menor))
+    return [(n, t) for _, n, t in partes]
 
 
-def justificativa(f):
-    """O texto da coluna justificativa_recomendacao e do app, feito para este cliente:
-    a casa e a cidade dele; o porquê (provas das necessidades); o fato que o diferencia dos
+def justificativa_partes(f):
+    """O motivo em partes nomeadas, na ordem de leitura (o app mostra cada parte na tela certa):
+    nao_elegivel, abertura, porque, fato, em_jogo, risco, menos, limite ou acima, confirmar, atencao, confianca.
+    A casa e a cidade dele; o porquê (provas das necessidades); o fato que o diferencia dos
     vizinhos; quanto está em jogo; o risco da cidade; o que fica descoberto em reais; o que
     confirmar; e a confiança em números. Até 140 palavras: as frases menos importantes saem
     primeiro (opção acima, valor em jogo, risco da cidade, fato dos vizinhos): o porquê e a lacuna já
     trazem os valores em reais, e o que é só deste cliente vale mais que o que se repete."""
-    partes = [(100, _nao_elegivel(f))] if f["elegibilidade"] == "NAO" else []
+    partes = [(100, "nao_elegivel", _nao_elegivel(f))] if f["elegibilidade"] == "NAO" else []
     porque, menos = _porque(f), (_se_escolher_menos(f) if f["elegibilidade"] == "SIM" else "")
     # o valor em jogo sai cedo, a não ser que seja o único jeito de o texto ter dois valores em reais
     em_jogo = 93 if (porque + menos).count("R$") < 2 else 60
-    partes += [(100, _abertura(f)), (95, porque), (72, fato_distintivo(f)), (em_jogo, _em_jogo(f)),
-               (70, risco_do_lugar(f))]
+    partes += [(100, "abertura", _abertura(f)), (95, "porque", porque), (72, "fato", fato_distintivo(f)),
+               (em_jogo, "em_jogo", _em_jogo(f)), (70, "risco", risco_do_lugar(f))]
     if f["elegibilidade"] == "SIM":   # alternativas só fazem sentido para uma proposta nova (RN-37)
-        partes.append((90, menos))
+        partes.append((90, "menos", menos))
         if not f["pendencias"]:   # com elegibilidade a confirmar, o texto prioriza a confirmação (RN-51: equilíbrio)
             limite = _no_limite(f)
             # no Essencial, o plano acima é a única alternativa do texto (RN-37): não sai
-            partes.append((92, limite) if limite else (91 if f["plano"] == "ESSENCIAL" else 50, _opcao_acima(f)))
+            partes.append((92, "limite", limite) if limite else (91 if f["plano"] == "ESSENCIAL" else 50, "acima", _opcao_acima(f)))
     if f["pendencias"] and f["elegibilidade"] == "SIM":
         perguntas = [p["pergunta"] for p in f["pendencias"] if p.get("pergunta")]
         if perguntas:
-            partes.append((98, "Antes de contratar: " + " ".join(perguntas)))
+            partes.append((98, "confirmar", "Antes de contratar: " + " ".join(perguntas)))
     if f["avisos"]:   # a cláusula fica nas colunas técnicas; o cliente lê só o efeito
-        partes.append((97, "Atenção: " + "; ".join(re.sub(r" \(CG[^)]*\)", "", a) for a in f["avisos"]) + "."))
-    texto = _cabe(partes + [(96, _confianca(f))])
-    if len(texto.split()) > MAX_PALAVRAS:   # com perguntas de elegibilidade, o acerto em números dá lugar a elas
-        texto = _cabe(partes + [(96, _confianca(f, com_acerto=False))])
-    return texto
+        partes.append((97, "atencao", "Atenção: " + "; ".join(re.sub(r" \(CG[^)]*\)", "", a) for a in f["avisos"]) + "."))
+    saida = _cabe(partes + [(96, "confianca", _confianca(f))])
+    if sum(len(t.split()) for _, t in saida) > MAX_PALAVRAS:   # com perguntas de elegibilidade, o acerto em números dá lugar a elas
+        saida = _cabe(partes + [(96, "confianca", _confianca(f, com_acerto=False))])
+    return saida
+
+
+def justificativa(f):
+    """O texto da coluna justificativa_recomendacao: as partes de justificativa_partes, juntas."""
+    return " ".join(t for _, t in justificativa_partes(f))

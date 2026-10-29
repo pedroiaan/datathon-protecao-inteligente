@@ -7,30 +7,42 @@ import { estadoDoCaso, Estado, incluidas, preco, sugeridoDe } from "./estado";
 import { COB, Cob, NOME_CLIENTE, Plano, PLANOS } from "./produto";
 import { aprox, brl, OPCOES, perguntaCliente, temAdicional } from "./textos";
 
-const ALFABETO = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"; // sem 0/O, 1/I/L: fácil de ditar por telefone
+const SIGLA_PLANO: Record<string, string> = { ESSENCIAL: "ESS", PRATICO: "PRA", TOTAL: "TOT" };
 
-/** Código do cliente para o gerente: sempre o mesmo para o mesmo cliente e imóvel (hash FNV-1a). */
+/** Código do cliente para o gerente: diz onde e o quê, sem precisar decorar.
+ *  SR-RS-ESS-0015-1 = Seguro Residencial · estado do imóvel · plano indicado pelo motor · nº do caso e do imóvel.
+ *  Sempre o mesmo para o mesmo cliente e imóvel; dá para ditar por telefone e filtrar por parte ("RS", "ESS"). */
 export function codigoDoCliente(f: any): string {
-  let h = 0x811c9dc5;
-  for (const c of `${f.cliente_id}|${f.imovel_id}`) h = Math.imul(h ^ c.charCodeAt(0), 0x01000193) >>> 0;
-  let s = "";
-  for (let i = 0; i < 6; i++) { s += ALFABETO[h % ALFABETO.length]; h = Math.floor(h / ALFABETO.length); }
-  return `SR-${s.slice(0, 4)}-${s.slice(4)}`;
+  const uf = String(f.local || "").split("/")[1] || "BR";
+  const [, caso = "0", imovel = "1"] = String(f.imovel_id).match(/(\d+)_(\d+)$/) || [];
+  return `SR-${uf}-${SIGLA_PLANO[f.plano] || "SEG"}-${caso.slice(-4).padStart(4, "0")}-${Number(imovel)}`;
 }
-/** Busca tolerante: "sr4f7k2q", "4F7K" e "SR-4F7K-2Q" acham o mesmo cliente. */
+/** Busca tolerante: "sr-rs-ess-0015-1", "0015", "RSESS" e "SR RS ESS 0015 1" acham o mesmo cliente. */
 export const normalizaCodigo = (t: string) => t.toUpperCase().replace(/[^0-9A-Z]/g, "").replace(/^SR/, "");
+
+/** Por que o pedido precisa (ou não) do gerente: o que trava a contratação vem primeiro na fila. */
+export function prioridadeDoPedido(f: any): { nivel: 0 | 1 | 2; rotulo: string } {
+  const obrig = (f.perguntas || []).filter((p: any) => p.obrigatoria).length;
+  if (f.jornada === "GERENTE") return { nivel: 0, rotulo: "precisa de você" };
+  if (obrig) return { nivel: 0, rotulo: `trava: ${obrig} pergunta${obrig > 1 ? "s" : ""} obrigatória${obrig > 1 ? "s" : ""}` };
+  if (f.confianca === "BAIXA") return { nivel: 1, rotulo: "confiança baixa" };
+  return { nivel: 2, rotulo: "pronto para 1 toque" };
+}
 
 export const nomeDoCliente = (caso: string, f: any) => NOME_CLIENTE[caso] || `Cliente ${f.cliente_id}`;
 
-export type Pedido = { caso: string; codigo: string; nome: string; f: any; quando: string; novo: boolean };
+export type Pedido = { caso: string; codigo: string; nome: string; f: any; quando: string; novo: boolean; prioridade: { nivel: 0 | 1 | 2; rotulo: string } };
 
-/** Fila do gerente: o pedido do cliente da demonstração primeiro; os outros casos do motor como carteira. */
+/** Fila do gerente: o pedido que acabou de chegar primeiro; depois a carteira, do que trava a
+ *  contratação (pergunta obrigatória, jornada do gerente) para o que já está pronto para 1 toque. */
 export function filaDoGerente(casos: Record<string, string>, fichas: Record<string, any>, casoAtual: string): Pedido[] {
-  const horas = ["há 12 min", "há 40 min", "há 1 h", "há 2 h", "ontem", "ontem", "ontem"];
-  const ordem = [casoAtual, ...Object.keys(casos).filter((k) => k !== casoAtual)];
-  return ordem.filter((k) => casos[k]).map((k, i) => {
+  const horas = ["há 12 min", "há 40 min", "há 1 h", "há 2 h", "ontem", "ontem", "ontem", "ontem", "ontem"];
+  const vistos = new Set<string>();
+  const unicos = [casoAtual, ...Object.keys(casos)].filter((k) => casos[k] && !vistos.has(casos[k]) && vistos.add(casos[k]));
+  const resto = unicos.slice(1).sort((a, b) => prioridadeDoPedido(fichas[casos[a]]).nivel - prioridadeDoPedido(fichas[casos[b]]).nivel);
+  return [unicos[0], ...resto].filter(Boolean).map((k, i) => {
     const f = fichas[casos[k]];
-    return { caso: k, codigo: codigoDoCliente(f), nome: nomeDoCliente(k, f), f, quando: i === 0 ? "agora" : horas[i - 1], novo: i === 0 };
+    return { caso: k, codigo: codigoDoCliente(f), nome: nomeDoCliente(k, f), f, quando: i === 0 ? "agora" : horas[i - 1], novo: i === 0, prioridade: prioridadeDoPedido(f) };
   });
 }
 

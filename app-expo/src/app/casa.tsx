@@ -5,7 +5,7 @@ import { router } from "expo-router";
 import { useEffect } from "react";
 import { Pressable, View } from "react-native";
 import Animated, { FadeIn, LinearTransition, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { CampoEditavel, DO_BANCO, Estado, mudancas, perguntasDaTela, useEstado, tipoAtual, nivelDaAnalise } from "@/logica/estado";
+import { CampoEditavel, DO_BANCO, Estado, mudancas, perguntasDaTela, useEstado, tipoAtual, nivelDaAnalise, responder as responderNoEstado } from "@/logica/estado";
 import { PLANOS, Plano } from "@/logica/produto";
 import { aprox, cidade, entre, NOME_TIPO, NOME_USO, NOME_VINCULO, perguntaCliente, titulo, uf } from "@/logica/textos";
 import { useAjuda } from "@/ui/ajuda";
@@ -105,7 +105,7 @@ export default function Casa() {
     );
   };
   const ps = perguntasDaTela(f);
-  const responder = (cod: string, op: string) => { haptic.toque(); set((x) => ({ ...x, resp: { ...x.resp, [cod]: op } })); };
+  const responder = (cod: string, op: string) => { haptic.toque(); set((x) => responderNoEstado(x, cod, op)); };
   const lar = tipoAtual(s) === "APARTAMENTO" ? ["do ", "seu apê"] : ["da ", "sua casa"];
   const fala = `Já sabemos bastante ${lar.join("")}. ` + CAMPOS.map((cp) => `${cp.rotulo}: ${nomeDe(cp)}`).join(". ") + ". Toque em qualquer item para mudar.";
 

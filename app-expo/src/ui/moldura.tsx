@@ -29,13 +29,17 @@ function BarraStatus() {
   );
 }
 
-export function Moldura({ children }: { children: ReactNode }) {
+/** `lado`: painel à direita do iPhone (a planilha da demonstração); `sobre`: camada por cima de tudo (menu). */
+export function Moldura({ children, lado, sobre }: { children: ReactNode; lado?: ReactNode; sobre?: ReactNode }) {
   const { width, height } = useWindowDimensions();
   if (!naMoldura()) return <SafeAreaProvider>{children}</SafeAreaProvider>;
-  const escala = Math.min(1, (height - 40) / (TELA.h + BORDA * 2), (width - 40) / (TELA.w + BORDA * 2));
+  const largLado = lado ? Math.min(900, Math.max(520, width * 0.6)) : 0;
+  const larguraTelefone = width - largLado - (lado ? 32 : 0);
+  const escala = Math.min(1, (height - 40) / (TELA.h + BORDA * 2), (larguraTelefone - 40) / (TELA.w + BORDA * 2));
   return (
     // overflow "clip" (só no navegador): o aparelho em escala não deixa a página rolar quando algo recebe foco
-    <View ref={(n: any) => { if (n?.style) n.style.overflow = "clip"; }} style={{ flex: 1, backgroundColor: "#E7EAF3", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+    <View ref={(n: any) => { if (n?.style) n.style.overflow = "clip"; }} style={{ flex: 1, backgroundColor: "#E7EAF3", flexDirection: "row", overflow: "hidden" }}>
+    <View style={{ width: larguraTelefone, alignItems: "center", justifyContent: "center" }}>
       <View style={{ width: TELA.w + BORDA * 2, height: TELA.h + BORDA * 2, borderRadius: 68, backgroundColor: "#0B0C12", padding: BORDA, transform: [{ scale: escala }],
         shadowColor: "#1B1F6B", shadowOpacity: 0.28, shadowRadius: 40, shadowOffset: { width: 0, height: 24 } }}>
         <View style={{ flex: 1, borderRadius: 56, overflow: "hidden", backgroundColor: "#000" }}>
@@ -48,6 +52,9 @@ export function Moldura({ children }: { children: ReactNode }) {
           <View pointerEvents="none" style={{ position: "absolute", bottom: 8, left: (TELA.w - 136) / 2, width: 136, height: 5, borderRadius: 3, backgroundColor: "#111214", opacity: 0.85, zIndex: 60 }} />
         </View>
       </View>
+    </View>
+    {lado ? <View style={{ width: largLado, paddingVertical: 20, paddingRight: 20 }}>{lado}</View> : null}
+    {sobre}
     </View>
   );
 }

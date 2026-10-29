@@ -63,5 +63,13 @@ Motor pronto e auditado contra o guia: 49 testes, planilhas validadas, README fi
 4. Gravar o vídeo de 5 min (roteiro na especificação e no guia do time).
 5. Entrega até 29/10 às 10h.
 
+## 6b. Estado do app (29/10, madrugada): app Expo pronto para gravar
+O app de verdade está em **`app-expo/`** (Expo SDK 58, expo-router, Reanimated), feito na branch **`app-celular`** e enviado ao Pedro por PR. Tudo o que foi feito está em [[App Expo - app de verdade no celular]] (rodadas 1 a 8), [[Portal do gerente]] e [[Prompt das ilustrações (ChatGPT)]].
+- **Fluxo:** aviso na tela de bloqueio → entrada → Passos 1 a 5 → sucesso (casa que gira e vira ✓) → Meu seguro. Lado do gerente: Ajuda → Falar com o gerente → **Portal do gerente** (código `SR-XXXX-XX` por cliente, pedido preenchido, sugestões, edição de plano e coberturas, envio). O cliente recebe a proposta com o selo "ajustado pelo gerente".
+- **Visual:** 16 ilustrações e 28 ícones gerados no ChatGPT já estão no app (`assets/ilustracoes/`, `assets/icones/`, registro em `src/ui/imagens.ts`). Faltam os 6 visuais do prompt 2 (papel de parede, casa do Meu seguro v2, casa da moeda, emblemas dos planos). Quando chegarem: copiar os PNGs, `npm run reduzir`, `npm run imagens`.
+- **Rodar:** `cd app-expo && npm install && npx expo start` (celular, Expo Go) ou `npx expo start --web` (moldura de iPhone no navegador). Abrir um caso direto: `/?caso=perfil_B_casa_familiar`.
+- **Dados do motor:** `npm run dados` copia e confere as fichas (`src/dados/contrato.ts` é o contrato).
+- **Antes de commitar:** `npx tsc --noEmit` e `npx eslint src`. Commits sem menção a IA (regra do time).
+
 ## 7. Primeira mensagem sugerida para o novo assistente
-"Leia o HANDOFF_CONTEXTO.md e, no vault do Obsidian, `00 - Painel.md`, `Regras e contexto.md`, `14 - App v2/Trajetória do projeto.md` e `14 - App v2/Especificação do app v2 - ligado ao motor.md`. Siga as regras de negócio e as minhas regras pessoais. Depois me diga em 5 linhas o que entendeu e comece pela prioridade P1 da especificação, no clone `C:\Users\maxom\Documents\datathon-protecao-inteligente`."
+"Leia o HANDOFF_CONTEXTO.md e, no vault do Obsidian, `00 - Painel.md`, `Regras e contexto.md`, `14 - App v2/Trajetória do projeto.md` e `14 - App v2/App Expo - app de verdade no celular.md` (o app atual, em `app-expo/`). Siga as regras de negócio e as minhas regras pessoais. Depois me diga em 5 linhas o que entendeu e continue pelas pendências da nota do App Expo."

@@ -41,7 +41,7 @@ tags: [painel, datathon-bb]
 - **11 - Fontes externas:** [[SINAPI]], [[Atlas Digital de Desastres]], [[INPE ELAT]], [[SINESP]], [[SGB setorização de risco]], [[Imagem de satélite]]
 - **12 - Inovação:** [[Ideias v2 - proposta para o time]] (atual), [[Ideias descartadas ou adiadas]], [[Ideias de equilíbrio]], [[Ideias de inovação]], [[Referências de mercado]]
 - **15 - Código:** [[Mapa do código]], [[Auditoria do código - 28-10]], [[Métricas do mercado x as nossas]], [[Log de alterações do código]]
-- **14 - App v2:** [[Especificação do app v2 - ligado ao motor]] (próxima tarefa), [[Trajetória do projeto]]
+- **14 - App v2:** [[App Expo - app de verdade no celular]] (app para gravar, rodada 8, branch `app-celular`), [[Portal do gerente]], [[Prompt das ilustrações (ChatGPT)]], [[Protótipo v4 - app do cliente]], [[Especificação do app v2 - ligado ao motor]], [[Trajetória do projeto]]
 - **13 - Design:** [[App atual - falhas e nosso fluxo]] (protótipo), [[Regras de design BB]], [[Análise do visual do BB]], [[Catálogo do Seguro Residencial BB]]
 
 Para abrir o grafo, use `Ctrl+G`. As cores separam as pastas.

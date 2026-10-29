@@ -46,6 +46,23 @@ Linha do tempo das decisões, para quem chega agora. Detalhes em cada nota ligad
 - O app **não precisa ser real**; é demonstração. Continuar **dentro do app do BB**, ligado ao motor, com botões A/B/C, modo raio-X e tela do gerente. Não criar app separado.
 - Plano de construção: [[Especificação do app v2 - ligado ao motor]].
 
+## 29/10: app Expo alinhado ao motor do Pedro (rodada 4)
+- O Pedro atualizou o motor e o vault (necessidades com provas, território, RN-07 revisada: renda só como sinal complementar de bens; idade nunca). O app foi refeito em cima desse commit, na branch `app-celular`; a minha versão anterior do F1/motor ficou em `backup/rodada-guilherme-29-10`.
+- App: moldura de iPhone para gravar no computador, só azuis do BB, escala tipográfica, selo "ajustado pelo gerente", pagamento trocável, Ajuda em todas as telas, herói e animação final refeitos, contrato de dados e importação com conferência. Detalhes em [[App Expo - app de verdade no celular]].
+
+## 29/10: portal do gerente e ilustrações finais (rodada 5)
+- Portal do gerente dentro do app: código fixo por cliente (só o gerente vê), pedido pré-preenchido, sugestões dentro da faixa do motor, envio para o cliente decidir. Regras em [[Portal do gerente]].
+- Prompt para o ChatGPT gerar as 17 ilustrações finais, com as regras das skills dentro do próprio prompt. Enviado ao time; o app troca o SVG pela imagem quando o PNG chega. Ver [[Prompt das ilustrações (ChatGPT)]].
+
+## 29/10: gerente edita a proposta (rodada 6)
+- O gerente agora edita plano e coberturas antes de devolver a proposta (mesmos componentes do Personalizar). O selo "ajustado pelo gerente" que cobria o texto no Conferir foi para o cabeçalho da seção. Ver [[Portal do gerente]].
+
+## 29/10: prompt 2, ícones e visuais (rodada 7)
+- As ilustrações do ChatGPT ficaram boas; o resto do app precisava acompanhar. Prompt 2 enviado ao time (28 ícones em folhas + 6 visuais), e o app pronto para trocar cada peça sozinho. Ver [[Prompt das ilustrações (ChatGPT)]].
+
+## 29/10: imagens do ChatGPT no app e PR para o Pedro (rodada 8)
+- 16 ilustrações e 28 ícones no app; reduzidas para carregar rápido. Branch `app-celular` atualizada com o `main` do Pedro e enviada por PR, com o vault atualizado (inclusive o HANDOFF_CONTEXTO, para continuar em outro chat).
+
 ## Números atuais do motor (base comum, 138 casos)
 | Métrica | Valor |
 |---|---|

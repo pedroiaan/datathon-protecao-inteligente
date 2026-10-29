@@ -23,7 +23,7 @@ export const COB: Record<Cob, {
 export const FIXAS: Cob[] = ["incendio", "eletricos", "agua", "vendaval", "impacto"];
 export const PLANOS: Record<Plano, { nome: string; extras: Cob[]; pacotes: number; frase: string }> = {
   ESSENCIAL: { nome: "Essencial", extras: [], pacotes: 1, frase: "O básico: fogo, água, vento e danos elétricos." },
-  PRATICO: { nome: "Prático", extras: ["roubo", "vidros"], pacotes: 3, frase: "Soma roubo com arrombamento e quebra de vidros." },
+  PRATICO: { nome: "Prático", extras: ["roubo", "vidros"], pacotes: 4, frase: "Soma roubo com arrombamento e quebra de vidros." },
   TOTAL: { nome: "Total", extras: ["roubo", "vidros", "rc", "aluguel", "despesas"], pacotes: 6, frase: "Soma danos a terceiros, aluguel e emergências." },
 };
 export const ORDEM_PLANO: Plano[] = ["ESSENCIAL", "PRATICO", "TOTAL"];

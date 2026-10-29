@@ -3,7 +3,7 @@
 Projeto para o **Datathon Proteção Inteligente** (IBMEC + BB Seguros / Brasilseg).
 
 ## Equipe
-- **Nome da equipe:** _(preencher)_
+- **Nome da equipe:** Os Varetas
 - **Integrantes:** _(preencher com nome completo de cada um)_
 - **Desafio:** Seguro Residencial
 - **Instituição / turma:** _(preencher)_
@@ -22,7 +22,8 @@ python -m pytest -q                 # 155 testes
 python motor/gerar.py --entrega     # gera, valida e copia as planilhas para entrega/
 ```
 
-- **Demo:** abra `prototipos/indexprototipo_gerente.html` com dois cliques. Os botões A, B e C mostram os perfis do slide 14 com a ficha real do motor.
+- **App (demonstração do vídeo):** Node 22. Na pasta `app-expo/`: `npm install` e `npx expo start --web`, depois abra `http://localhost:8081` numa janela larga. O app aparece dentro de um iPhone, com a planilha que o motor gerou para o cliente ao lado e um menu com os 2 casos do vídeo. No celular: Expo Go + `npx expo start`. Para atualizar as fichas do app depois de mudar o motor: `python motor/gerar.py --entrega` e `npm run dados` (em `app-expo/`).
+- **Demo antiga (HTML):** abra `prototipos/indexprototipo_gerente.html` com dois cliques. Os botões A, B e C mostram os perfis do slide 14 com a ficha real do motor.
 - **API (opcional):** `pip install -r requirements-api.txt` e `uvicorn api:app --app-dir motor --port 8000`. Documentação em `/docs`.
 - Os testes também rodam sozinhos no GitHub a cada envio (`.github/workflows/testes.yml`).
 
@@ -147,7 +148,19 @@ SINAPI (IBGE, pela API SIDRA, set/2026), CUB oficial (Sinduscons de SP, DF, GO, 
 - Nenhuma credencial ou dado restrito no repositório.
 
 ## Uso de IA
-Usamos assistentes de IA como apoio para revisar código, pesquisar fontes públicas e revisar textos. As regras, os parâmetros e os resultados foram decididos, executados e conferidos pela equipe, que entende e defende a solução.
+Usamos ferramentas de IA **como apoio**. Todas as regras, os parâmetros, as decisões de produto e os resultados foram decididos, executados e conferidos pela equipe, que entende, executa e defende o código e a solução. A responsabilidade pela entrega é nossa.
+
+| Para quê | Ferramenta | Como usamos | O que a equipe fez |
+|---|---|---|---|
+| Entender a proposta | Claude (Anthropic) | Leitura e resumo do guia, das condições gerais e das regras do produto; dúvidas sobre seguro residencial | Conferimos com os documentos oficiais e com a mentoria do BB; as regras ficaram escritas em `obsidian/BB Datathon/Regras de negócio.md` |
+| Sugestões de ideias | Claude | Debate de ideias para a recomendação, o motivo, as perguntas e a jornada | Escolhemos o que entrava e descartamos o resto (registro em `documentos/contexto/`) |
+| Desenvolver o motor (Python) | Claude Code | Escrita e revisão de código com testes primeiro (155 testes), revisão de código e auditorias | Cada regra foi validada contra o guia e os números conferidos na base; os parâmetros têm a origem escrita em `motor/parametros.py` |
+| Desenvolver o app (Expo) | Claude Code | Telas, painel-planilha da demonstração e correções | Testamos as jornadas no navegador |
+| Ilustrações e ícones do app | ChatGPT (geração de imagens) | Imagens no estilo do app, a partir de um prompt nosso (`app-expo/assets/ilustracoes/PROMPT_ChatGPT.md`) | Escolhemos, recortamos e revisamos as imagens |
+| Verificar APIs e fontes externas | Claude | Pesquisa de fontes públicas e conferência das APIs (IBGE/SIDRA, Banco Central/SGS, ANEEL, Atlas de Desastres) | Testamos cada API; fonte, data, licença e limitações em `motor/externos/FONTES.md`. Uma fonte de imprensa foi descartada por não ser auditável |
+| Slides e pitch | Claude | Estrutura do pitch e rascunho dos slides | Revisamos o conteúdo e apresentamos com as nossas palavras |
+
+**O que a IA não faz na solução:** o motor não chama nenhum modelo de IA. Ele é feito de regras determinísticas: a mesma entrada gera sempre a mesma saída, sem enviar dado de cliente a serviço externo. A base usada é a fictícia fornecida pela organização.
 
 ## Relato
 Caminhos testados e descartados estão em `documentos/contexto/` (seção "Decisões e o que descartamos" de cada etapa). Exemplos: confiança por corte numa nota (descartada por instabilidade), qualquer criança ou pet levando ao Total (inflava o Total para 65%), CUB de agregador (fonte não oficial).

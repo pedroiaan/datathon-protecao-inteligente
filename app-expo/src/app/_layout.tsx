@@ -10,7 +10,7 @@ import { DEMO } from "@/config";
 import { ProvedorEstado } from "@/logica/estado";
 import { ProvedorAcessibilidade } from "@/ui/acessibilidade";
 import { ProvedorFolha } from "@/ui/folha";
-import { MenuDemo } from "@/ui/menuDemo";
+import { BotaoTrocarCliente, MenuDemo } from "@/ui/menuDemo";
 import { Moldura } from "@/ui/moldura";
 import { PainelPlanilha } from "@/ui/planilha";
 import { C } from "@/ui/tema";
@@ -37,7 +37,7 @@ export default function Raiz() {
       {DEMO.animarSempre ? <ReducedMotionConfig mode={ReduceMotion.Never} /> : null}
       <ProvedorEstado>
       <Moldura lado={DEMO.planilhaAoLado ? <PainelPlanilha /> : undefined}
-        sobre={DEMO.planilhaAoLado && menu ? <MenuDemo onFechar={() => setMenu(false)} /> : undefined}>
+        sobre={DEMO.planilhaAoLado ? (menu ? <MenuDemo onFechar={() => setMenu(false)} /> : <BotaoTrocarCliente onPress={() => setMenu(true)} />) : undefined}>
         <ProvedorAcessibilidade>
           <ProvedorFolha>
             {/* Transição do iOS também no Android (ios_from_right), com voltar arrastando da tela toda */}

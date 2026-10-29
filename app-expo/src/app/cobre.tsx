@@ -4,7 +4,8 @@
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { Pressable, View } from "react-native";
+import { Carrossel } from "@/ui/carrossel";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
 import { Estado, incluidas, tipoAtual, useEstado } from "@/logica/estado";
 import { COB, Cob, ORDEM_PLANO, PACOTES, PLANOS } from "@/logica/produto";
@@ -62,6 +63,7 @@ export default function Cobre() {
   const { s } = useEstado();
   const ajuda = useAjuda("cobre");
   const [cena, setCena] = useState("agua");
+  const [posCena, setPosCena] = useState<Record<string, number>>({});   // onde cada situação está na lista, para centralizar a escolhida
   const [aberta, setAberta] = useState<Cob | null>(null);
   const [todas, setTodas] = useState(false);
   const [naoTodas, setNaoTodas] = useState(false);
@@ -89,18 +91,20 @@ export default function Cobre() {
         <View style={{ marginTop: 6, marginBottom: 14 }}><SeletorPlanos /></View>
       </Entra>
       <Entra i={1}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -20, marginTop: 6, marginBottom: 12 }} contentContainerStyle={{ paddingHorizontal: 20, gap: 8 }}>
+        <Carrossel focoX={posCena[cena]} style={{ marginHorizontal: -20, marginTop: 6, marginBottom: 12 }} contentContainerStyle={{ paddingHorizontal: 20, gap: 8 }}>
           {cs.map((x) => {
             const on = x.id === cena;
             return (
-              <Toque key={x.id} onPress={() => { haptic.toque(); setCena(x.id); }}
+              <View key={x.id} onLayout={(e) => { const px = e.nativeEvent.layout.x; setPosCena((m) => (m[x.id] === px ? m : { ...m, [x.id]: px })); }}>
+              <Toque onPress={() => { haptic.toque(); setCena(x.id); }}
                 style={{ flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 14, paddingVertical: 9, borderRadius: 999, backgroundColor: on ? C.azul : C.branco, borderWidth: 1.5, borderColor: on ? C.azul : C.borda }}>
                 <Icone n={COB[x.cob].ic} tam={15} cor={on ? C.branco : C.azul} />
                 <T s={{ fontFamily: F.b, fontSize: 13.5, color: on ? C.branco : C.texto }}>{x.rot}</T>
               </Toque>
+              </View>
             );
           })}
-        </ScrollView>
+        </Carrossel>
       </Entra>
       <Card i={2} style={{ padding: 0, overflow: "hidden" }}>
         <View style={{ height: 136, backgroundColor: C.azulFundo, alignItems: "center", justifyContent: "center" }}>
@@ -157,14 +161,14 @@ export default function Cobre() {
 
       <Animated.View layout={REFLUXO}>
         <Rotulo>{`Assistências 24h · ${p.pacotes} ${p.pacotes > 1 ? "pacotes" : "pacote"}`}</Rotulo>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -20 }} contentContainerStyle={{ paddingHorizontal: 20, gap: 8 }}>
+        <Carrossel style={{ marginHorizontal: -20 }} contentContainerStyle={{ paddingHorizontal: 20, gap: 8 }}>
           {PACOTES.map(([n, ic], i) => (
             <View key={n} style={{ width: 96, backgroundColor: C.branco, borderRadius: 14, paddingVertical: 11, paddingHorizontal: 6, alignItems: "center", opacity: i < p.pacotes ? 1 : 0.35 }}>
               <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: C.azulClaro, alignItems: "center", justifyContent: "center", marginBottom: 5 }}><Icone n={ic} tam={16} /></View>
               <T s={{ fontFamily: F.m, fontSize: 12, lineHeight: 15, textAlign: "center" }}>{n}</T>
             </View>
           ))}
-        </ScrollView>
+        </Carrossel>
       </Animated.View>
     </Tela>
   );

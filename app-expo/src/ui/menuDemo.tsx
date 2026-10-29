@@ -60,3 +60,17 @@ export function MenuDemo({ onFechar }: { onFechar: () => void }) {
     </View>
   );
 }
+
+/** Botão fixo no canto da tela (fora do iPhone e da planilha) para trocar de cliente a qualquer momento. */
+export function BotaoTrocarCliente({ onPress }: { onPress: () => void }) {
+  const { s } = useEstado();
+  return (
+    <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel="Trocar o cliente da demonstração"
+      style={({ hovered, pressed }: any) => ({ position: "absolute", top: 16, left: 16, zIndex: 90, flexDirection: "row", alignItems: "center", gap: 8,
+        backgroundColor: hovered ? "#2D37F5" : "#465EFF", borderRadius: 999, paddingHorizontal: 14, paddingVertical: 8,
+        boxShadow: "0 4px 14px rgba(28,34,102,0.25)", transform: [{ scale: pressed ? 0.96 : 1 }] })}>
+      <Text style={{ fontFamily: FONTE, color: "#fff", fontSize: 13, fontWeight: "700" }}>⇄  Trocar cliente</Text>
+      <Text style={{ fontFamily: FONTE, color: "#D9E1FF", fontSize: 12.5 }}>{NOME_CLIENTE[s.caso] || s.f.cliente_id}</Text>
+    </Pressable>
+  );
+}

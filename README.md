@@ -20,7 +20,7 @@ Projeto para o **Datathon Proteção Inteligente** (IBMEC + BB Seguros / Brasils
 | Códigos | `motor/` (motor de regras em Python), `app-expo/` (app da demonstração), `tests/` (155 testes) |
 | Dependências | `requirements.txt` + `.python-version` (Python 3.11); app: `app-expo/package.json` (Node 22) |
 | Dados externos | `motor/externos/` (cópias) e `motor/externos/FONTES.md` (fonte, data, licença, método, transformação e limitações) |
-| Apresentação | `slides/index.html` (pitch de 5 min) e o vídeo de até 5 min (link na entrega) |
+| Apresentação | Vídeo do pitch: **https://youtu.be/ERiq8830OBE** · slides em `slides/index.html` |
 | Métricas e evidências | `entrega/metricas.json`, `entrega/assertividade.json`, `entrega/casos_contrastantes.json` |
 
 ## Objetivo

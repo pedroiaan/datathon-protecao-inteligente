@@ -3,6 +3,7 @@ import { Nunito_800ExtraBold, Nunito_800ExtraBold_Italic, Nunito_900Black, useFo
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ReducedMotionConfig, ReduceMotion, useReducedMotion } from "react-native-reanimated";
 import { DEMO } from "@/config";
@@ -21,6 +22,13 @@ export default function Raiz() {
   const reduz = useReducedMotion() && !DEMO.animarSempre;
   // Menu da demonstração: abre antes da notificação, para escolher um dos 2 casos do vídeo
   const [menu, setMenu] = useState(true);
+  // Trocar de caso durante a gravação sem nada visível na tela: recarregar a página ou apertar M
+  useEffect(() => {
+    if (Platform.OS !== "web" || !DEMO.planilhaAoLado) return;
+    const tecla = (e: KeyboardEvent) => { if (e.key.toLowerCase() === "m" && !(e.target as HTMLElement)?.closest?.("input, textarea")) setMenu(true); };
+    window.addEventListener("keydown", tecla);
+    return () => window.removeEventListener("keydown", tecla);
+  }, []);
   useEffect(() => { if (ok) SplashScreen.hideAsync(); }, [ok]);
   if (!ok) return null;
   // Troca de tela: a do sistema (push nativo). Telas de bloqueio e sucesso entram com fade.
@@ -28,7 +36,7 @@ export default function Raiz() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       {DEMO.animarSempre ? <ReducedMotionConfig mode={ReduceMotion.Never} /> : null}
       <ProvedorEstado>
-      <Moldura lado={DEMO.planilhaAoLado ? <PainelPlanilha onMenu={() => setMenu(true)} /> : undefined}
+      <Moldura lado={DEMO.planilhaAoLado ? <PainelPlanilha /> : undefined}
         sobre={DEMO.planilhaAoLado && menu ? <MenuDemo onFechar={() => setMenu(false)} /> : undefined}>
         <ProvedorAcessibilidade>
           <ProvedorFolha>

@@ -9,8 +9,11 @@ pasta: app-expo/
 > [!tip] Como gravar (sem editar o vídeo depois)
 > 1. Na pasta `app-expo/`: `npm install` (só na primeira vez) e `npx expo start --web`.
 > 2. Abra `http://localhost:8081` numa janela larga (1600 × 900 fica ótimo).
-> 3. Aparece o **menu da demonstração**: escolha o caso e grave. O botão **Trocar caso**, no topo da planilha, volta ao menu.
+> 3. Aparece o **menu da demonstração**: escolha o caso e grave. Para trocar de caso: **recarregue a página** ou aperte **M** (nada aparece na tela).
 > 4. O app fica à **esquerda** (dentro de um iPhone) e a **planilha do motor** à **direita**, mudando a cada tela.
+
+> [!info] A planilha só acompanha o app (29/10)
+> Não rola, não tem aba clicável e não aceita clique: muda sozinha a cada tela do app. Cabe inteira ao lado do iPhone e usa as cores e as fontes do app (azul do BB, Figtree e Nunito), mantendo a cara de planilha: letras das colunas, números das linhas, grade e a barra de fórmulas com o motivo. O menu tem fundo escuro e desfocado.
 
 ## Os dois casos
 | | Caso 1 · "Já sabemos tudo" | Caso 2 · "Faltam dados" |

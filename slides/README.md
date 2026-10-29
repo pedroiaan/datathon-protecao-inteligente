@@ -25,7 +25,7 @@ Confira métricas em `../entrega/metricas.json` e `../entrega/assertividade.json
 1. Abertura e conscientização do cliente · 20 s.
 2. Fluxo dos sinais até o motivo · 30 s.
 3. Recomendação de plano por necessidade · 35 s.
-4. Estimativa de bens e atualidade dos dados · 55 s.
+4. Estimativa de bens e dados de fora (funciona sem internet) · 55 s.
 5. Evidências, limites, piloto e transição para a demo · 40 s.
 6. App ao vivo, sem retornar aos slides · 2 min: Luana (35 s), troca de cliente (5 s), Sérgio (60 s) e fechamento no motivo (20 s).
 

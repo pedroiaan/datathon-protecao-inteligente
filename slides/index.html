@@ -51,7 +51,7 @@
       <div class="canvas">
         <p class="eyebrow">Como funciona</p>
         <h2>Do sinal ao <span class="accent">motivo</span></h2>
-        <p class="sub">Cada etapa explica o que sabemos, o que estimamos e o que falta confirmar.</p>
+        <p class="sub">One Click Buy pré-preenchido: pergunta só o que falta e chama o gerente só na exceção.</p>
         <div class="flow">
           <div class="flow-item"><span>01</span><b>Sinais</b></div>
           <div class="flow-item"><span>02</span><b>Imóvel</b></div>
@@ -62,13 +62,13 @@
           <div class="flow-item"><span>07</span><b>Motivo</b></div>
         </div>
         <div class="signal-row">
-          <div class="signal-card"><strong>O banco já tem sinais</strong><p>IPTU, energia, compras, aluguel, financiamento e cadastro do imóvel.</p></div>
+          <div class="signal-card"><strong>86% menos esforço</strong><p>O banco já tem IPTU, luz, compras e aluguel: 2,75 perguntas em vez de ~20 campos.</p></div>
           <div class="signal-card"><strong>Elegibilidade vem primeiro</strong><p>Sinal fraco vira pergunta. A recomendação só segue quando o caso é elegível.</p></div>
           <div class="signal-card"><strong>O motivo acompanha a proposta</strong><p>Fato do cliente, necessidade atendida, valor em jogo e confiança explicada.</p></div>
         </div>
       </div>
       <p class="source">Fluxo: guia oficial do datathon · regra do motor documentada</p><span class="slide-num">02 / 05</span>
-      <aside class="notas"><div class="time">30 segundos</div><p>Começamos com o cadastro do imóvel e sinais como IPTU, conta de luz, compras, aluguel e financiamento. O motor interpreta esses dados e verifica a elegibilidade antes de recomendar. Cada informação fica identificada como observada, estimada ou pendente de confirmação. A confiança ajuda a decidir o que perguntar. O resultado é uma ficha com plano, coberturas, faixas e motivo, que pode ser usada pelo app ou pelo gerente.</p><small>Fonte: README.md; Guia oficial do datathon.</small></aside>
+      <aside class="notas"><div class="time">30 segundos</div><p>Começamos com o cadastro do imóvel e sinais como IPTU, conta de luz, compras, aluguel e financiamento. O motor interpreta esses dados e verifica a elegibilidade antes de recomendar. Cada informação fica identificada como observada, estimada ou pendente de confirmação. A confiança ajuda a decidir o que perguntar. Por isso o cliente responde, em média, 2,75 perguntas, contra cerca de 20 campos de uma cotação tradicional: 86% menos esforço. É um One Click Buy pré-preenchido: quem tem os dados completos contrata em 1 toque, sem pessoa no meio (81% dos casos seguem sem gerente), e o gerente entra só na exceção, com a mesma ficha. O nome técnico é STP com escalonamento humano.</p><small>Fonte: README.md; entrega/metricas.json (mercado: esforco_reducao_pct, sem_pessoa_pct_dos_elegiveis); Guia oficial do datathon.</small></aside>
     </section>
 
     <section class="slide" data-title="Plano pela necessidade" data-time="0:35">
@@ -87,10 +87,10 @@
       <aside class="notas"><div class="time">35 segundos</div><p>O plano vem da necessidade identificada. Se o aluguel está em jogo, recomendamos o Total, que inclui perda de aluguel. Sinais que sustentam a necessidade de roubo e quebra de vidros podem indicar o Prático. Para danos a terceiros, indicamos responsabilidade civil familiar, que também pode entrar como adicional. Morar em prédio ou condomínio pode apontar para essa cobertura, sem elevar o plano ao Total por si só. Se a recomendação está perto do limite, perguntamos o que pode decidir a escolha.</p><small>Fonte: motor passo a passo; métricas de necessidades e força da recomendação.</small></aside>
     </section>
 
-    <section class="slide" data-title="Bens e atualidade dos sinais" data-time="0:55">
+    <section class="slide" data-title="Bens e dados de fora" data-time="0:55">
       <div class="canvas">
         <p class="eyebrow">Dados e confiança</p>
-        <h2>Estimativa com origem e <span class="accent">validade</span></h2>
+        <h2>Estimativa com origem e <span class="accent">fonte oficial</span></h2>
         <div class="data-grid">
           <article class="panel">
             <h3>Como estimamos os bens</h3>
@@ -103,20 +103,15 @@
             <div class="assumption">O valor real dos bens não tem gabarito na base. O máximo é uma premissa declarada.</div>
           </article>
           <article class="panel">
-            <h3>Um sinal antigo pesa menos</h3>
-            <p class="muted" style="font-size:18px;line-height:1.35">A confiança considera a meia-vida de cada tipo de dado.</p>
-            <div class="half-life">
-              <div class="half-row"><strong>Vínculo e uso</strong><div class="half-track"><i style="width:32%"></i></div><em>mais breve</em></div>
-              <div class="half-row"><strong>Bens</strong><div class="half-track"><i style="width:54%"></i></div><em>intermediária</em></div>
-              <div class="half-row"><strong>Área e tipo</strong><div class="half-track"><i style="width:92%"></i></div><em>mais longa</em></div>
-            </div>
-            <div class="fresh-note">Passou da meia-vida? O sinal observado conta como estimado. A confiança pode cair e o app pode pedir confirmação.</div>
-            <p class="fresh-caveat">Na base do datathon, não há datas por registro; nenhum caso foi rebaixado por antiguidade.</p>
+            <h3>Dados de fora, sem depender da internet</h3>
+            <div class="range-strip"><div class="range-pill"><strong>Viram valor</strong><span>Custo de construção (SINAPI/IBGE e CUB), inflação (IPCA/Banco Central) e aluguel (FipeZAP)</span></div><div class="range-pill"><strong>Viram motivo</strong><span>Quedas de energia (ANEEL) e chuvas e alagamentos (Defesa Civil)</span></div></div>
+            <div class="fresh-note">Sem internet: 0 erros. Sem nenhum arquivo externo: 137 de 138 planos iguais.</div>
+            <p class="fresh-caveat" style="color:var(--ink2)">As fontes ficam salvas no projeto, com data e licença; a API só atualiza.</p>
           </article>
         </div>
       </div>
       <p class="source">Fontes: README.md · motor/parametros.py · entrega/assertividade.json</p><span class="slide-num">04 / 05</span>
-      <aside class="notas"><div class="time">55 segundos</div><p>Para estimar os bens, juntamos as compras identificadas com os bens vinculados ao imóvel e atualizamos os valores pela inflação. O mínimo é o maior entre esses dois sinais. Para o máximo, aplicamos um fator de estoque às compras; é uma premissa, pois não temos o valor real de todos os objetos. A confiança também considera a atualidade: vínculo e uso envelhecem mais rápido que os bens, enquanto área e tipo mudam mais devagar. Idade da pessoa não entra na decisão; a antiguidade do sinal, sim. Quando um dado observado ultrapassa sua janela de atualidade, passa a ser estimado e pode pedir confirmação. A base não tem datas por registro para demonstrar esse rebaixamento nos casos. Por isso, explicamos a regra e seu limite.</p><small>Fonte: README.md; motor/parametros.py; assertividade dos cálculos.</small></aside>
+      <aside class="notas"><div class="time">55 segundos</div><p>Para estimar os bens, juntamos as compras identificadas com os bens vinculados ao imóvel e atualizamos os valores pela inflação. O mínimo é o maior entre esses dois sinais. Para o máximo, aplicamos um fator de estoque às compras; é uma premissa, pois não temos o valor real de todos os objetos. Dados públicos entram de dois jeitos. O custo de construção do IBGE e o CUB, a inflação do Banco Central e o aluguel do FipeZAP viram valores das faixas. A ANEEL e a Defesa Civil viram motivo: em Porto Alegre, por exemplo, a distribuidora ficou em último lugar no ranking de quedas de energia. Essas fontes ficam salvas no projeto, com data e licença; as APIs só atualizam. Testamos o motor com a internet bloqueada: zero erros. E mesmo sem nenhum arquivo externo, 137 dos 138 planos ficam iguais.</p><small>Fonte: README.md; motor/externos/FONTES.md; obsidian/BB Datathon/16 - Projeto por inteiro/04 - Fontes externas e APIs.md.</small></aside>
     </section>
 
     <section class="slide" data-title="Evidências e demonstração" data-time="0:40">
@@ -139,7 +134,7 @@
             <div class="limitation-item"><i></i><span>Calibrar premissas com dados reais de sinistros.</span></div>
             <div class="limitation-item"><i></i><span>Testar compreensão e conversão em um piloto.</span></div>
             <div class="limitation-item"><i></i><span>Expandir a mesma ficha para app e gerente.</span></div>
-            <div class="limitation-item"><i></i><span>Idade pessoal fora do cálculo; idade do sinal reduz confiança. IA apoiou pesquisa e revisão.</span></div>
+            <div class="limitation-item"><i></i><span>Idade nunca entra; renda em 0 casos. O motor não usa IA. A IA nos apoiou no código, no app e nos slides (README).</span></div>
             <div class="close-line">Agora, vamos ver essa recomendação funcionar no app.</div>
           </aside>
         </div>
